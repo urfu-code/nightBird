@@ -11,7 +11,7 @@ public class Woodman implements WoodmanInterface{
 	public Woodman(Point startPoint, String name) {
 		m_startPoint = startPoint;
 		m_location = startPoint;
-		m_lifes = 0;
+		m_lifes = 3;
 		m_name = name;
 	}
 	public int GetLifeCount() {
