@@ -60,7 +60,7 @@ public class Wood implements WoodInterface {
 					carecter.AddLife();				
 					return Action.Life;
 				}
-				if (m_wood[location.getX()][location.getY()] == 'L')
+				if (m_wood[location.getX()][location.getY()] == '0')
 					return Action.Ok;
 				return null;
 			
