@@ -1,4 +1,9 @@
-﻿
+﻿package wood01Interfaces;
+
+import wood01.Action;
+import wood01.Direction;
+import wood01.Point;
+
 public interface Wood {
 	/**
 	 * Создает нового лесного жителя.
@@ -14,6 +19,7 @@ public interface Wood {
 	 * @param name имя лесного жителя
 	 * @param direction направление перемещения
 	 * @return результат перемещения
+	 * @throws Exception 
 	 */
-	Action move(String name, Direction direction);
+	Action move(String name, Direction direction) throws Exception;
 }
