@@ -42,9 +42,7 @@ public class Point {
 		if (obj.getClass()!=Point.class)
 			return false;
 		Point pnt = (Point)obj;
-		if ( (pnt.x==x) && (pnt.y==y) )
-			return true;
-		return false;
+		return  ( (pnt.x==x) && (pnt.y==y) );
 	}
 	
 	@Override

@@ -12,7 +12,6 @@ import Enums.Action;
 import Enums.Direction;
 import Exceptions.EmptyFileException;
 import Exceptions.InvalidFileException;
-import Exceptions.OccupiedLocationException;
 import Exceptions.UnexceptableNameException;
 import Interfaces.WoodInterface;
 import Interfaces.WoodLoaderInterface;
@@ -46,6 +45,45 @@ public class WoodLoaderTests{
 		}
 	}
 
+	@Test
+	public void testBoxDrawingCharacter() {
+		String[] masOfStr = new String [7];
+		masOfStr[0] = "┌─┬─┐\n";
+		masOfStr[1] = "│ │ │\n";
+		masOfStr[2] = "│♥│ │\n";
+		masOfStr[3] = "│☢  │\n";
+		masOfStr[4] = "├─┼ ┤\n";
+		masOfStr[5] = "│⍹  │\n";
+		masOfStr[6] = "└─┴─┘\n";
+		StringBuilder strBuild = new StringBuilder();
+		for (int i=0; i<masOfStr.length; i++)
+			strBuild.append(masOfStr[i]);
+		String str = strBuild.toString();
+		byte[] buf = str.getBytes();
+		ByteArrayInputStream stream = new ByteArrayInputStream(buf);
+		WoodLoaderInterface loader = new WoodLoader();
+		WoodInterface testWood = null;
+		try {
+			testWood = loader.Load(stream);
+		} catch (EmptyFileException e) {
+			fail("EmptyFileException");
+			e.printStackTrace();
+		} catch (InvalidFileException e) {
+			fail("InvalidFileException");
+			e.printStackTrace();
+		}
+		try {
+			testWood.createWoodman("Player", new Point (1, 1));
+		} catch (UnexceptableNameException e) {
+			fail("UnexceptableNameException");
+			e.printStackTrace();
+		}
+		assertEquals(Action.Life, testWood.move("Player", Direction.Down));
+		assertEquals(Action.Dead, testWood.move("Player", Direction.Down));
+		assertEquals(Action.Fail, testWood.move("Player", Direction.Left));
+		assertEquals(Action.Ok, testWood.move("Player", Direction.Right));
+	}
+	
 	@Test(expected = EmptyFileException.class)
 	public void EmptyFileExceptionTest() throws EmptyFileException, InvalidFileException {
 		String str = "";
@@ -77,9 +115,6 @@ public class WoodLoaderTests{
 			
 		} catch (UnexceptableNameException e) {
 			fail("UnexceptableNameException");
-			e.printStackTrace();
-		} catch (OccupiedLocationException e) {
-			fail("OccupiedLocationException");
 			e.printStackTrace();
 		}
 	}

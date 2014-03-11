@@ -13,11 +13,11 @@ public class WoodmanTests extends TestCase{
 	Woodman man = new Woodman(new Point(1,1), "TestMan");
 
 	public void testGetLifeCount() {
-		assertEquals(man.GetLifeCount(),3);
+		assertEquals(3, man.GetLifeCount());
 	}
 
 	public void testGetName() {
-		assertEquals(man.GetName(), "TestMan");
+		assertEquals("TestMan", man.GetName());
 	}
 
 	public void testKill() {
@@ -38,8 +38,7 @@ public class WoodmanTests extends TestCase{
 	}
 
 	public void testGetLocation() {
-		//assertEquals(new Point(1,1), man);
-        assertEquals(1,1);
+		assertEquals(new Point(1,1), man.GetLocation());
 	}
 
 	public void testSetLocation() {

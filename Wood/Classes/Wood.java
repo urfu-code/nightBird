@@ -20,17 +20,10 @@ public class Wood implements WoodInterface {
 		m_woodmans = new HashMap<>();
 	}
 	@Override
-	public void createWoodman(String name, Point start) throws UnexceptableNameException, OccupiedLocationException{
+	public void createWoodman(String name, Point start) throws UnexceptableNameException {
 //		Проверка на уникальность имени
 		if (m_woodmans.containsKey(name))
-			throw new UnexceptableNameException(name);
-//		Проверка, нет ли в точке старта другого игрока
-		if (!freeCal(start))
-			throw new OccupiedLocationException(start);
-//		Проверка на то, нет ли в точке старта стены
-		if (m_wood[start.getX()][start.getY()]=='1')
-			throw new OccupiedLocationException(start);
-		
+			throw new UnexceptableNameException(name);		
 		m_woodmans.put(name, new Woodman(start, name));
 	}
 
@@ -54,9 +47,22 @@ public class Wood implements WoodInterface {
 				location = location.MoveLeft();
 				break;
 			case None:
-				//Тк мы потом проверим, не занята ли клетка, на которую пытаемся перейти, надо выйти в этот момент,
-				//Иначе получится, что мы пытаемся остаться на клетке, которая занята (Нами)
-				return Action.Ok;
+				if (m_wood[location.getX()][location.getY()] == 'K') {
+					if (carecter.Kill())
+						return Action.Dead;
+					else
+					{
+						m_woodmans.remove(name);
+						return Action.WoodmanNotFound;
+					}
+				}
+				if (m_wood[location.getX()][location.getY()] == 'L') {
+					carecter.AddLife();				
+					return Action.Life;
+				}
+				if (m_wood[location.getX()][location.getY()] == 'L')
+					return Action.Ok;
+				return null;
 			
 		}
 		int x = location.getX();
@@ -65,38 +71,33 @@ public class Wood implements WoodInterface {
 			throw new RuntimeException("неправильная координата Х=" + x + ". А длина массива по X: " + m_wood.length);
 		if ( (y<0) || (y>m_wood[0].length) )
 			throw new RuntimeException("неправильная координата Y=" + y + ". А длина массива по Y: " + m_wood[0].length);
-		if (!freeCal(location))
-			return Action.OccupiedLocation;
 		switch (m_wood[x][y]) {
 			case '0':
 				carecter.SetLocation(location);
 				return Action.Ok;
 			case '1':
-				return Action.Fail;
+				//на случай если мы стоит на капкане или жизни опять запускаем функцию, что бы она прибавила или уменьшила
+				//количество жизней
+				if( move(name, Direction.None) == Action.WoodmanNotFound )
+					return Action.WoodmanNotFound;
+				else
+					return Action.Fail;
 			case 'K':
 				carecter.SetLocation(location);
 				if (carecter.Kill())
 					return Action.Dead;
 				else
+				{
 //					умер((
+					m_woodmans.remove(name);
 					return Action.WoodmanNotFound;
+				}
 			case 'L':
 				carecter.SetLocation(location);
-				carecter.AddLife();				
+				carecter.AddLife();	
 				return Action.Life;
 		}
 		//Никогда до этого момента не должен дойти
 		return null;
-	}
-	/**
-	 * Проверка на свободность ячейки
-	 * @param point
-	 * @return true - если в ячейке нет другого Вудмана
-	 */
-	private boolean freeCal(Point point) {
-		for (WoodmanInterface i: m_woodmans.values())
-			if (i.GetLocation().equals(point))
-				return false;
-		return true;
 	}
 }

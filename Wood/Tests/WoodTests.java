@@ -13,7 +13,6 @@ import Enums.Action;
 import Enums.Direction;
 import Exceptions.EmptyFileException;
 import Exceptions.InvalidFileException;
-import Exceptions.OccupiedLocationException;
 import Exceptions.UnexceptableNameException;
 import Interfaces.WoodInterface;
 
@@ -47,27 +46,33 @@ public class WoodTests {
 	}
 
 	@Test(expected = UnexceptableNameException.class)
-	public void testUnexceptableNameException() throws UnexceptableNameException, OccupiedLocationException {
+	public void testUnexceptableNameException() throws UnexceptableNameException {
 		myWood.createWoodman("Player", new Point(1, 1));
 		myWood.createWoodman("Player", new Point(2, 1));
 	}
 	
-	@Test(expected = OccupiedLocationException.class)
-	public void testOccupiedLocationException() throws UnexceptableNameException, OccupiedLocationException {
-		myWood.createWoodman("Player1", new Point(1, 1));
-		myWood.createWoodman("Player2", new Point(1, 1));
-	}
 	
 	@Test
-	public void testOK() throws UnexceptableNameException, OccupiedLocationException {
+	public void testOK() throws UnexceptableNameException {
 		myWood.createWoodman("Player1", new Point(1, 1));
 		assertEquals(Action.Ok, myWood.move("Player1", Direction.Right));
 	}
 
 	@Test
-	public void testFail() throws UnexceptableNameException, OccupiedLocationException {
+	public void testFail() throws UnexceptableNameException {
 		myWood.createWoodman("Player1", new Point(1, 1));
 		assertEquals(Action.Fail, myWood.move("Player1", Direction.Up));
+	}
+	
+	//Проверка случая, когда игрок стоит на капкане и пытается перейти в стену
+	@Test
+	public void testFailAndDead() throws UnexceptableNameException {
+		myWood.createWoodman("Player", new Point(2,1));
+		assertEquals(Action.Dead, myWood.move("Player", Direction.Down));//2 жизни
+		assertEquals(Action.Fail, myWood.move("Player", Direction.Down));//1 жизнь
+		assertEquals(Action.Fail, myWood.move("Player", Direction.Down));//0 жизней
+		assertEquals(Action.Ok, myWood.move("Player", Direction.Up));
+		assertEquals(Action.WoodmanNotFound, myWood.move("Player", Direction.Down)); //Умер
 	}
 	
 	@Test
@@ -82,14 +87,15 @@ public class WoodTests {
 			assertEquals(Action.Dead, myWood.move("Player1", Direction.Down)); //0 жизней
 			assertEquals(Action.Ok, myWood.move("Player1", Direction.Up));
 			assertEquals(Action.WoodmanNotFound, myWood.move("Player1", Direction.Down)); //Умер
-			assertEquals(Action.Ok, myWood.move("Player1", Direction.Up));
 		} catch (UnexceptableNameException e) {
 			fail("UnexceptableNameException");
 			e.printStackTrace();
-		} catch (OccupiedLocationException e) {
-			fail("OccupiedLocationException");
-			e.printStackTrace();
-		}
+		} 
+	}
+	
+	@Test
+	public void testWoodmanNotFound2() throws UnexceptableNameException {
+		assertEquals(Action.WoodmanNotFound, myWood.move("Player", Direction.Down));
 	}
 	
 	@Test
@@ -100,16 +106,6 @@ public class WoodTests {
 		} catch (UnexceptableNameException e) {
 			fail("UnexceptableNameException");
 			e.printStackTrace();
-		} catch (OccupiedLocationException e) {
-			fail("OccupiedLocationException");
-			e.printStackTrace();
 		}
-	}
-	
-	@Test
-	public void testOcupaidLocation() throws UnexceptableNameException, OccupiedLocationException {
-		myWood.createWoodman("Player1", new Point(1, 1));
-		myWood.createWoodman("Player2", new Point(2, 1));
-		assertEquals(Action.OccupiedLocation, myWood.move("Player1", Direction.Right));
 	}
 }

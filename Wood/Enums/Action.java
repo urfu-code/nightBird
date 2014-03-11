@@ -14,7 +14,5 @@ public enum Action {
 	// Успешный ход персонажа, после которого у персонажа добавляется еще одна жизнь
 	Life,
 	// Нет такого игрока
-	WoodmanNotFound,
-	//клетка занята другим игроком
-	OccupiedLocation
+	WoodmanNotFound
 }
