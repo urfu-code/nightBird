@@ -1,25 +1,32 @@
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 
 public class WoodTest {
 	
-	@Test
-	public void testMove() {
-		char [][] miniWood = new char [4][4];
+	char [][] miniWood = new char [4][4];
+	
+	@Before
+	public void myWood(){
 		for (int i = 0; i < 4; i++ )
 		{	miniWood[i][0] = '1';
 			miniWood[i][3] = '1';
 		}
-			miniWood[0][1] = '1';
-			miniWood[0][2] = '1';
-			miniWood[3][1] = '1';
-			miniWood[3][2] = '1';
-			miniWood[2][1] = 'L';
-			miniWood[1][2] = 'K';
-			miniWood[1][1] = '0';
-			miniWood[2][2] = '0';
+		miniWood[0][1] = '1';
+		miniWood[0][2] = '1';
+		miniWood[3][1] = '1';
+		miniWood[3][2] = '1';
+		miniWood[2][1] = 'L';
+		miniWood[1][2] = 'K';
+		miniWood[1][1] = '0';
+		miniWood[2][2] = '0';
+		My_Wood one = new My_Wood(miniWood);
+	}
+	
+	@Test
+	public void testMove() {
 		My_Wood one = new My_Wood(miniWood);
 		Point my = new Point(1,1);
 		one.createWoodman("A", my);
@@ -30,29 +37,16 @@ public class WoodTest {
 	}
 	@Test
 	public void testMoveKill() {
-		char [][] miniWood = new char [4][4];
-		for (int i = 0; i < 4; i++ )
-		{	miniWood[i][0] = '1';
-			miniWood[i][3] = '1';
-		}
-			miniWood[0][1] = '1';
-			miniWood[0][2] = '1';
-			miniWood[3][1] = '1';
-			miniWood[3][2] = '1';
-			miniWood[2][1] = 'L';
-			miniWood[1][2] = 'K';
-			miniWood[1][1] = '0';
-			miniWood[2][2] = '0';
 		My_Wood one = new My_Wood(miniWood);
 		Point my = new Point(1,1);
 		one.createWoodman("A", my);
-		assertEquals(Action.Ok, one.move("A", Direction.Down));//2 жизни
+		assertEquals(Action.Dead, one.move("A", Direction.Down));//2 пїЅпїЅпїЅпїЅпїЅ
 		assertEquals(Action.Ok, one.move("A", Direction.Up));
-		assertEquals(Action.Ok, one.move("A", Direction.Down));//1 жизнь
+		assertEquals(Action.Dead, one.move("A", Direction.Down));//1 пїЅпїЅпїЅпїЅпїЅ
 		assertEquals(Action.Ok, one.move("A", Direction.Up));
-		assertEquals(Action.Ok, one.move("A", Direction.Down));//0
+		assertEquals(Action.Dead, one.move("A", Direction.Down));//0
 		assertEquals(Action.Ok, one.move("A", Direction.Up));
-		assertEquals(Action.Dead, one.move("A", Direction.Down));
+		assertEquals(Action.WoodmanNotFound, one.move("A", Direction.Down));
 	}
 
 }

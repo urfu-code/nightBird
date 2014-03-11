@@ -20,7 +20,7 @@ public class WoodLoaderTest {
 		NewWood.createWoodman("Ann", start);
 		assertEquals(Action.Ok, NewWood.move("Ann", Direction.Down));
 		assertEquals(Action.Life, NewWood.move("Ann", Direction.Right));
-		assertEquals(Action.Ok, NewWood.move("Ann", Direction.Right));
+		assertEquals(Action.Dead, NewWood.move("Ann", Direction.Right));
 		assertEquals(Action.Fail, NewWood.move("Ann", Direction.Right));
 	}
 
