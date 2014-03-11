@@ -50,7 +50,7 @@ public class WoodmanTest {
 	public void testGetLocation() {
 		Point my = new Point(0, 0);
 		My_Woodman one = new My_Woodman("A", my);
-		equals(new Point(0, 0) == one.GetLocation());
+		assertEquals(my, one.GetLocation());
 	}
 
 	@Test

@@ -6,27 +6,18 @@ public class My_WoodLoader implements WoodLoader {
 
 	@Override
 	public My_Wood Load(InputStream stream) {
+		char [][] wood = new char [50][50];
 		int n = 0, m = 0;
 		Scanner in = new Scanner(stream);
-		String s = "";
 		while(in.hasNextLine()){
-			String test = in.nextLine();
-			s += test;
-			n = test.length();
-			m++;		
+			String s = in.nextLine();
+			n = s.length();
+			for(int i = 0; i < s.length(); i++){
+				wood[i][m] = s.charAt(i);
+			}
+			m++;	
 		}
 		//stream.close();
-		char [][] wood = new char [n][m];
-		int a=0, b=n, k=0;
-		while (k < m){
-			String work = s.substring(a, b);
-			for(int i = 0; i < work.length(); i++){
-				wood[i][k] = work.charAt(i);
-			}
-			k++;
-			a=b;
-			b += n;
-		}
 			My_Wood my_wood = new My_Wood(wood);
 		return my_wood;
 	}
