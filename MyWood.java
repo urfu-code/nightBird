@@ -14,16 +14,20 @@ public class MyWood implements Wood {
 		m_woodmanList.put(name,m_woodman);		
 	}
 
-	public Action move(String name, Direction direction) {
+	public Action move(String name, Direction direction) throws CodeException {
 		Action result=null;
 		if (!m_woodmanList.containsKey(name)) {
 			result=Action.WoodmanNotFound;
 		} else {
 			Point n=m_woodmanList.get(name).GetLocation();
 			if(m_woodmanList.get(name).GetLifeCount()>-1) {
-				int x=0; int y=0;
+				int x=0; int y=0;		
 				int i=m_woodmanList.get(name).GetLocation().getX();
+				if (i>m_wood.length||i<0) 
+					throw new CodeException("Input correct coordinates!");
 				int j=m_woodmanList.get(name).GetLocation().getY();
+				if (j>m_wood.length||j<0) 
+					throw new CodeException("Input correct coordinates!");		
 				if (direction==Direction.Up) { 
 					n=new Point(i-1,j);
 					x=i-1; y=j;
