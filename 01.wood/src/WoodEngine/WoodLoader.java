@@ -41,7 +41,7 @@ public class WoodLoader implements IWoodLoader {
 		}
 		Character[] a = new Character[vec.size()];
 		vec.toArray(a);
-		return new Wood(a, w, h);
+		return new Wood(a, h, w);
 	}
 
 }
