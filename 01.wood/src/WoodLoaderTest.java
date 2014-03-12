@@ -26,8 +26,10 @@ public class WoodLoaderTest {
 					assertEquals((Character) '1', ofChristmasTrees.getChar(new Point(0, i)));
 					assertEquals((Character) '1', ofChristmasTrees.getChar(new Point(8, i)));
 				}
-				assertEquals((Character) '1', ofChristmasTrees.getChar(new Point(4, 7)));
-				assertEquals((Character) '0', ofChristmasTrees.getChar(new Point(2, 1)));
+				for (int i = 1; i < 6; i++) {
+					assertEquals((Character) '0', ofChristmasTrees.getChar(new Point(i, 6)));
+				}
+				
 				assertEquals((Character) 'K', ofChristmasTrees.getChar(new Point(7, 1)));
 				assertEquals((Character) 'L', ofChristmasTrees.getChar(new Point(7, 6)));
 			}
