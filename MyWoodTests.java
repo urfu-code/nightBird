@@ -6,7 +6,7 @@ import org.junit.Test;
 public class MyWoodTest {
 
 	@Test
-	public void testMove1() {
+	public void testMove1() throws CodeException {
 		char[][]wood = new char[4][4];
 		for (int j=0;j<4;j++) {
 			wood[0][j]='1';
@@ -27,7 +27,7 @@ public class MyWoodTest {
 	}
 
 	@Test
-	public void testMove2() {
+	public void testMove2() throws CodeException {
 		char[][]wood = new char[4][4];
 		for (int j=0;j<4;j++) {
 			wood[0][j]='1';
@@ -48,7 +48,7 @@ public class MyWoodTest {
 	}
 
 	@Test
-	public void testMove3() {
+	public void testMove3() throws CodeException {
 		char[][]wood = new char[4][4];
 		for (int j=0;j<4;j++) {
 			wood[0][j]='1';
@@ -69,7 +69,7 @@ public class MyWoodTest {
 	}
 
 	@Test
-	public void testMove4() {
+	public void testMove4() throws CodeException {
 		char[][]wood = new char[4][4];
 		for (int j=0;j<4;j++) {
 			wood[0][j]='1';
@@ -90,7 +90,7 @@ public class MyWoodTest {
 	}
 
 	@Test
-	public void testMove5() {
+	public void testMove5() throws CodeException {
 		char[][]wood = new char[4][4];
 		for (int j=0;j<4;j++) {
 			wood[0][j]='1';
@@ -112,7 +112,7 @@ public class MyWoodTest {
 	}
 
 	@Test
-	public void testMove6() {
+	public void testMove6() throws CodeException {
 		char[][]wood = new char[4][4];
 		for (int j=0;j<4;j++) {
 			wood[0][j]='1';
