@@ -1,41 +1,72 @@
-/**
- * Лесной житель
- */
-public interface Woodman {
-	/**
-	 * Количество жизней персонажа.
-	 */
-	int GetLifeCount();
-	
-	/**
-	 * Имя персонажа.
-	 */
-	String GetName();
 
-	/**
-	 * Уменьшить количество жизней.
-	 * 
-	 * @return успех уменьшения жизней.
-	 */
-	boolean Kill();
+public class Woodman implements IWoodman {
+	protected final String name;
+	private int lifeCount;
+	private Point lctn;
+	private Point start;
+	
+	Woodman(String name, Point start) {
+		this.name = name;
+		this.start = this.lctn = start;
+		this.lifeCount = 3;
+	}
+	
+	@Override
+	public int GetLifeCount() {
+		return lifeCount;
+	}
 
-	/**
-	 * Добавить жизнь персонажу.
-	 */
-	void AddLife();
+	@Override
+	public String GetName() {
+		return name;
+	}
+
+	@Override
+	public boolean Kill() {
+		lifeCount--;
+		if (lifeCount >= 0)
+			return true;
+		return false;
+	}
+
+	@Override
+	public void AddLife() {
+		lifeCount++;
+	}
+
+	@Override
+	public Point GetLocation() {
+		return lctn;
+	}
+
+	@Override
+	public void SetLocation(Point location) {
+		this.lctn = location;
+	}
+
+	@Override
+	public void MoveToStart() {
+		this.lctn = this.start;
+
+	}
 	
-	/**
-	 * Местоположение персонажа на игровом поле.
-	 */
-	Point GetLocation();
-	
-	/**
-	 * Установить новое местоположение персонажа на игровом поле.
-	 */
-	void SetLocation(Point location);
-	
-	/**
-	 * Переместить игрока в стартовую точку
-	 */
-	public void MoveToStart();
+	@Override
+	public boolean equals(Object woodman) {
+
+		if (woodman == null) {
+			return false;
+		}
+
+		if (woodman.getClass() != Woodman.class) {
+			return false;
+		}
+		
+		Woodman wm = (Woodman) woodman;
+		if (wm.GetName() != GetName()) {
+			return false;
+		}
+		
+		return true;
+	}
+
 }
