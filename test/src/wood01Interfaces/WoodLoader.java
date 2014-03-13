@@ -11,7 +11,6 @@ public interface WoodLoader {
 	 * @param stream поток с информацией о лесе.
 	 * @return Лес
 	 * @throws IOException 
-	 * @throws Exception 
 	 */
-	Wood Load(InputStream stream) throws IOException, Exception;
+	Wood Load(InputStream stream) throws IOException;
 }

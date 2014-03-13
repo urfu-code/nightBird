@@ -7,46 +7,21 @@ import wood01Interfaces.Wood;
 
 public class TheWood implements Wood {
 	
-	protected char[][] wood;
-	protected Map<String,TheWoodman>woodmans;
-	protected Map<Character,Character> elements;
+	private char[][] wood;
+	private Map<String,TheWoodman>woodmans;
 	
-	public TheWood(char[][] _wood) throws Exception {
+	public TheWood(char[][] _wood) {
 		wood = _wood;
 		woodmans = new HashMap<String,TheWoodman>();
-		elements = new HashMap<Character,Character>();
-		elements.put('┌', '1');
-		elements.put('─', '1');
-		elements.put('┬', '1');
-		elements.put('┐', '1');
-		elements.put('│', '1');
-		elements.put('┼', '1');
-		elements.put('┤', '1');
-		elements.put('├', '1');
-		elements.put('└', '1');
-		elements.put('─', '1');
-		elements.put('┴', '1');
-		elements.put('┘', '1');
-		elements.put('♥', 'L');
-		elements.put(' ', '0');
-		elements.put('□', '1');
-		elements.put('ѻ', 'K');
-		elements.put('1', '1');
-		elements.put('0', '0');
-		elements.put('K', 'K');
-		elements.put('L', 'L');
 	}
 	@Override
 	public void createWoodman(String name, Point start) throws Exception {
-		if (woodmans.containsKey(name)) {
-			throw new Exception("вудман с таким именем уже существует!");
-		}
-		else if ((start.getX() < 0)||(start.getY() < 0)||
+		if ((start.getX() < 0)||(start.getY() < 0)||
 			(start.getX() >= wood[0].length)||(start.getY() >= wood.length)) {
 			throw new Exception("не могу создать вудмана за границами мира!");
 		}
-		else if (elements.get(wood[start.getY()][start.getX()]) == '1') {
-			throw new Exception("не могу создать вудмана в стене!");
+		else if (wood[start.getY()][start.getX()] == '1') {
+			throw new Exception("не могу создать вудмана в стене");
 		}
 		woodmans.put(name,new TheWoodman(name, start));
 	}
@@ -72,7 +47,7 @@ public class TheWood implements Wood {
 			newPosition = newPosition.MoveLeft();
 			break;
 		case None:
-			break;
+			currentAction = Action.Ok;
 		case Right:
 			newPosition = newPosition.MoveRight();
 			break;
@@ -84,9 +59,9 @@ public class TheWood implements Wood {
 			throw new Exception("вышли за границы игрового мира!");
 		}
 
-		switch(elements.get(wood[newPosition.getY()][newPosition.getX()])) {
+		switch(wood[newPosition.getY()][newPosition.getX()]) {
 		
-		case '1'	:
+		case '1':
 			currentAction = Action.Fail;
 			break;
 		case '0':
@@ -112,7 +87,7 @@ public class TheWood implements Wood {
 			throw new Exception("неопознанная клетка!");
 		}
 		if ((currentAction == Action.Fail)||(direction == Direction.None)) {
-			if (elements.get(wood[currentWoodman.GetLocation().getY()][currentWoodman.GetLocation().getX()]) == 'K') {
+			if (wood[currentWoodman.GetLocation().getY()][currentWoodman.GetLocation().getX()] == 'K') {
 				if(currentWoodman.Kill()) {
 					currentAction = Action.Dead;
 				}
@@ -120,7 +95,7 @@ public class TheWood implements Wood {
 					currentAction = Action.WoodmanNotFound;
 				}
 			}
-			else if (elements.get(wood[currentWoodman.GetLocation().getY()][currentWoodman.GetLocation().getX()]) == 'L') {
+			else if (wood[currentWoodman.GetLocation().getY()][currentWoodman.GetLocation().getX()] == 'L') {
 				currentWoodman.AddLife();
 				currentAction = Action.Life;
 			}
@@ -131,7 +106,7 @@ public class TheWood implements Wood {
 	public boolean equalsOfWoods(TheWood eqWood) {
 		for (int i = 0; i < wood.length; i++) {
 			for (int j = 0; j < wood[0].length; j++) {
-				if (elements.get(wood[i][j]) != elements.get(eqWood.wood[i][j])) {
+				if (wood[i][j] != eqWood.wood[i][j]) {
 					return false;
 				}
 			}

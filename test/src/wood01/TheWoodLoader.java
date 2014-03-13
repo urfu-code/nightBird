@@ -11,7 +11,7 @@ import wood01Interfaces.WoodLoader;
 public class TheWoodLoader implements WoodLoader {
 
 	@Override	
-	public TheWood Load(InputStream stream) throws Exception {
+	public TheWood Load(InputStream stream) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		String s;
 		LinkedList<char[]>woodArrList = new LinkedList<char[]>();

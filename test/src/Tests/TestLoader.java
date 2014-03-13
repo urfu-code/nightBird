@@ -3,6 +3,7 @@ package Tests;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import org.junit.Test;
 
@@ -12,7 +13,7 @@ import wood01.TheWoodLoader;
 public class TestLoader {
 
 	@Test
-	public void testLoad() throws Exception {
+	public void testLoad() throws IOException {
 		String testString = "111111111\n1000001K1\n111110101\n100010101\n101000101\n101111101\n1000000L1\n111111111";
 		String test2Wood =  "1111111111000001K11111101011000101011010001011011111011000000L1111111111";
 		ByteArrayInputStream testStream = new ByteArrayInputStream(testString.getBytes());

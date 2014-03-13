@@ -33,9 +33,10 @@ public class Point {
 	}
 	
 	public boolean equals(Object obj) {
-		if (!(obj instanceof Point)) {
-			return false;
+		if ((this.getX() == ((Point) obj).getX())&&(this.getY() == ((Point) obj).getY())) {
+			return true;
 		}
-		return (this.getX() == ((Point) obj).getX())&&(this.getY() == ((Point) obj).getY());		
+		return false;
+		
 	}
 }
