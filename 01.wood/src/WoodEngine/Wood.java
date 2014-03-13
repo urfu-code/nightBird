@@ -1,4 +1,5 @@
 package WoodEngine;
+import java.io.IOException;
 import java.util.HashSet;
 
 public class Wood implements IWood {
@@ -30,16 +31,12 @@ public class Wood implements IWood {
 	}
 
 	@Override
-	public void createWoodman(String name, Point start) throws Exception {
-		for (Woodman curWM : m_woodmansSet) {
-			if (curWM.GetName() == name) {
-				throw new Exception("Cannot create new Woodman with '" + name + "' name. It's already in use.");
-			}
+	public void createWoodman(String name, Point start) throws IOException {
+		if(m_woodMap[start.getX()][start.getY()] == '1'){
+			m_woodmansSet.add(new Woodman(name, start));
+			return;
 		}
-		if(m_woodMap[start.getX()][start.getY()] != '0'){
-			throw new Exception("Bad start point");
-		}
-		m_woodmansSet.add(new Woodman(name, start));
+		throw new IOException("Bad start point");
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 ﻿package WoodEngine;
 
+import java.io.IOException;
+
 
 
 public interface IWood {
@@ -8,9 +10,9 @@ public interface IWood {
 	 * 
 	 * @param name имя лесного жителя
 	 * @param start место появления
-	 * @throws Exception 
+	 * @throws IOException 
 	 */
-	void createWoodman(String name, Point start) throws Exception;
+	void createWoodman(String name, Point start) throws IOException;
 	
 	/**
 	 * Перемещает лесного жителя.

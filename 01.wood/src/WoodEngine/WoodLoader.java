@@ -26,6 +26,9 @@ public class WoodLoader implements IWoodLoader {
 			// \r\n
 			w = vec.indexOf('\r');
 			h = (vec.size() + 2) / (w + 2);
+			if(w * h != (vec.size() - (h-1)*2)){
+				throw new IOException("Not orthogonal");
+			}
 			for (int i = 0; i < h - 1; i++) {
 				vec.removeElement('\r');
 				vec.removeElement('\n');
@@ -35,6 +38,9 @@ public class WoodLoader implements IWoodLoader {
 			// \n
 			w = vec.indexOf('\n');
 			h = (vec.size() + 1) / (w + 1);
+			if(w * h != (vec.size() - (h-1))){
+				throw new IOException("Not orthogonal");
+			}
 			for (int i = 0; i < h - 1; i++) {
 				vec.removeElement('\n');
 			}

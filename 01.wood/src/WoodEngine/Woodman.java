@@ -52,5 +52,14 @@ public class Woodman implements IWoodman{
 	public void MoveToStart() {
 		m_location = m_start;
 	}
+	
+	public boolean equals(Object obj){
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Woodman))
+            return false;
+        Woodman woodman = (Woodman)obj;
+        return (this.GetName() == woodman.GetName());
+    }
 
 }
