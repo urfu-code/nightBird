@@ -33,10 +33,10 @@ public class Wood implements IWood {
 	@Override
 	public void createWoodman(String name, Point start) throws IOException {
 		if(m_woodMap[start.getX()][start.getY()] == '1'){
-			m_woodmansSet.add(new Woodman(name, start));
-			return;
+			throw new IOException("Bad start point");
 		}
-		throw new IOException("Bad start point");
+		m_woodmansSet.add(new Woodman(name, start));
+		return;
 	}
 
 	@Override

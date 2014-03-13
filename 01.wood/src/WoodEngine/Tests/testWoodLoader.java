@@ -17,7 +17,7 @@ import WoodEngine.WoodLoader;
 public class testWoodLoader {
 
 	@Test
-	public final void testLoad() throws Exception {
+	public final void testLoad() throws IOException {
 		InputStream in = new FileInputStream("maze");
 		WoodLoader wl = new WoodLoader();
 		Wood w;

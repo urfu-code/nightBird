@@ -2,6 +2,7 @@ package WoodEngine;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Iterator;
 import java.util.Vector;
 
 
@@ -43,6 +44,15 @@ public class WoodLoader implements IWoodLoader {
 			}
 			for (int i = 0; i < h - 1; i++) {
 				vec.removeElement('\n');
+			}
+		}
+		if (h * w != vec.size()) {
+			throw new IOException("Odd input");
+		}
+		for (Iterator<Character> iterator = vec.iterator(); iterator.hasNext();) {
+			Character ch = (Character) iterator.next();
+			if ((ch != '0') && (ch != '1') && (ch != '2') && (ch != '3')) {
+				throw new IOException("Too odd input");
 			}
 		}
 		Character[] a = new Character[vec.size()];
