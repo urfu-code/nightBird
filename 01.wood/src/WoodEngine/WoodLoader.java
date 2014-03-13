@@ -46,9 +46,6 @@ public class WoodLoader implements IWoodLoader {
 				vec.removeElement('\n');
 			}
 		}
-		if (h * w != vec.size()) {
-			throw new IOException("Odd input");
-		}
 		for (Iterator<Character> iterator = vec.iterator(); iterator.hasNext();) {
 			Character ch = (Character) iterator.next();
 			if ((ch != '0') && (ch != '1') && (ch != '2') && (ch != '3')) {
