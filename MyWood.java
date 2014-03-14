@@ -9,75 +9,70 @@ public class MyWood implements Wood {
 		m_wood=wood;
 	}
 
-	public void createWoodman(String name, Point start) throws CodeException {
+	public void createWoodman(String name, Point start) {
 		MyWoodman m_woodman=new MyWoodman(name,start);
-		if (!m_woodmanList.containsKey(name)) 
 		m_woodmanList.put(name,m_woodman);		
-		else throw new CodeException("This woodman exists!");
 	}
 
-	public Action move(String name, Direction direction)  {
+	public Action move(String name, Direction direction) {
 		Action result=null;
 		if (!m_woodmanList.containsKey(name)) {
 			result=Action.WoodmanNotFound;
 		} else {
 			Point n=m_woodmanList.get(name).GetLocation();
-	
-				int x=0; int y=0;		
-				int i=m_woodmanList.get(name).GetLocation().getX();
-				int j=m_woodmanList.get(name).GetLocation().getY();
-					if (direction==Direction.Up) { 
-					n=new Point(i-1,j);
-					x=i-1; y=j;
+			Point newPoint = m_woodmanList.get(name).GetLocation();
+			if(m_woodmanList.get(name).GetLifeCount()>-1) {
+
+				switch (direction) {
+				case Up: newPoint=n.MoveUp();
+				break;
+				case Down: newPoint=n.MoveDown();
+				break;
+				case Left: newPoint=n.MoveLeft();
+				break;
+				case Right: newPoint=n.MoveRigth();
+				break;	
+				case None: result=Action.Ok;
 				}
-				if (direction==Direction.Down) { 
-					n=new Point(i+1,j);
-					x=i+1; y=j;
-				}
-				if (direction==Direction.Left) {
-					n=new Point(i,j-1);
-					x=i; y=j-1;
-				}
-				if (direction==Direction.Right) {
-					n=new Point(i,j+1);
-					x=i; y=j+1;
-				}
-				if (direction==Direction.None) {
-					x=i; y=j;
-				}				
-				if (m_wood[x][y]=='K') {
-					m_woodmanList.get(name).Kill();
-					result=Action.Dead;
-					m_woodmanList.get(name).SetLocation(n); 
-					if(m_woodmanList.get(name).GetLifeCount()<=-1) {
-						m_woodmanList.remove(name);
-						result=Action.WoodmanNotFound;
-						}
-				}
-				if (m_wood[x][y]=='1') {
-					if(m_wood[i][j]=='K') 
-						{
+				
+				switch (m_wood[newPoint.getX()][newPoint.getY()]) {
+				case '1': {
+					if(m_wood[newPoint.getX()][newPoint.getX()]=='K') {
 						m_woodmanList.get(name).Kill();
 						result=Action.Dead;
-						}
-					if(m_wood[i][j]=='L'){
+					}
+					if(m_wood[newPoint.getX()][newPoint.getX()]=='L') {
 						m_woodmanList.get(name).AddLife();
 						result=Action.Life;
 					}
 					else 
 						result=Action.Fail;
 				}
-				if (m_wood[x][y]=='0') {
-					result=Action.Ok;
-					m_woodmanList.get(name).SetLocation(n); 
+				break;
+				case '0': {
+					result= Action.Ok;
+					m_woodmanList.get(name).SetLocation(newPoint);
 				}
-				if (m_wood[x][y]=='L') {
+				break;
+				case 'L': {
 					m_woodmanList.get(name).AddLife();
 					result=Action.Life; 
-					m_woodmanList.get(name).SetLocation(n); 
+					m_woodmanList.get(name).SetLocation(newPoint); 
 				}
-				
-			}
-		return result;
+				break;
+				case 'K': {
+					m_woodmanList.get(name).Kill();
+					result=Action.Dead;
+					m_woodmanList.get(name).SetLocation(newPoint); 
+					if(m_woodmanList.get(name).GetLifeCount()<=-1) {
+						m_woodmanList.remove(name);
+						result=Action.WoodmanNotFound;
+					} 
+				}
+				break;
+				}
+		}
 	}
+	return result;
+}
 }
