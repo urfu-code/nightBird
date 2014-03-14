@@ -1,3 +1,7 @@
+package wood01Interfaces;
+
+import wood01.Point;
+
 /**
  * Лесной житель
  */
@@ -8,7 +12,7 @@ public interface Woodman {
 	int GetLifeCount();
 	
 	/**
-	 * Имя персонажа.
+	 * �?мя персонажа.
 	 */
 	String GetName();
 
