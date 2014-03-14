@@ -16,8 +16,6 @@ public class MyWoodLoader implements WoodLoader {
 		List<String> list = new LinkedList<String>();
 		Scanner sc = new Scanner(stream);
 		try {
-			list.add(sc.nextLine());
-			m = 1;
 			while (sc.hasNextLine()) {
 				list.add(sc.nextLine());
 				m++;
