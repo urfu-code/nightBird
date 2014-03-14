@@ -2,32 +2,55 @@ package Tests;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import wood01.Action;
 import wood01.Direction;
 import wood01.Point;
+import wood01.RealWood;
 import wood01.TheWood;
 
 public class TestWood {
 	
-	@Test
+	TheWood testWood;
+	char[][] wood;
+	
+	@Before
 	public void testMove() throws Exception {
-		char[][] wood =  {
-			{'1','0','1'},
-			{'L','0','1'},
-			{'0','K','1'},
-		};
-		TheWood testWood = new TheWood(wood);
+		wood = new char[3][];
+		wood[0] = new char[]{'1','0','1'};
+		wood[1] = new char[]{'L','0','1'};
+		wood[2] = new char[]{'0','K','1'};
+		testWood = (TheWood) new RealWood(wood);
 		testWood.createWoodman("kolya", new Point(1,1));
+	}
+	
+	@Test
+	public void testActionWoodmanNotFound() throws Exception {
 		assertEquals(Action.WoodmanNotFound, testWood.move("nekolya", Direction.Up));
+	}
+	
+	@Test 
+	public void testActionFail() throws Exception {
 		assertEquals(Action.Fail, testWood.move("kolya", Direction.Right));
+	}
+	@Test
+	public void voidtestActionOk() throws Exception {
 		assertEquals(Action.Ok, testWood.move("kolya", Direction.Up));
-		assertEquals(Action.Ok, testWood.move("kolya", Direction.Down));
+	};
+	
+	@Test
+	public void testActionLife() throws Exception {
 		assertEquals(Action.Life, testWood.move("kolya", Direction.Left));
-		assertEquals(Action.Ok, testWood.move("kolya", Direction.Down));
-		assertEquals(Action.Dead, testWood.move("kolya", Direction.Right));
-		testWood.move("kolya", Direction.Up);
+	}
+	@Test
+	public void testActionDead() throws Exception {
+		assertEquals(Action.Dead, testWood.move("kolya", Direction.Down));
+	}
+	
+	@Test
+	public void testRemoveWoodman() throws Exception {
 		testWood.move("kolya", Direction.Down);
 		testWood.move("kolya", Direction.Up);
 		testWood.move("kolya", Direction.Down);
@@ -35,50 +58,37 @@ public class TestWood {
 		testWood.move("kolya", Direction.Down);
 		testWood.move("kolya", Direction.Up);
 		assertEquals(Action.WoodmanNotFound, testWood.move("kolya", Direction.Down));
-		testWood.createWoodman("petya", new Point(1,1));
-		testWood.move("petya", Direction.Left);
-		testWood.move("petya", Direction.Up);
-		testWood.move("petya", Direction.Down);
-		assertEquals(Action.Dead, testWood.move("petya", Direction.Right));
-		assertEquals(Action.Dead, testWood.move("petya", Direction.Right));
-		assertEquals(Action.Dead, testWood.move("petya", Direction.Right));
-		assertEquals(Action.Dead, testWood.move("petya", Direction.Right));
-		assertEquals(Action.Dead, testWood.move("petya", Direction.Right));
-		assertEquals(Action.WoodmanNotFound, testWood.move("petya", Direction.Right));
-		
+	}
+	
+	@Test
+	public void testMoveInWall() throws Exception {
+		testWood.move("kolya", Direction.Left);
+		testWood.move("kolya", Direction.Up);
+		testWood.move("kolya", Direction.Down);
+		assertEquals(Action.Dead, testWood.move("kolya", Direction.Right));
+		assertEquals(Action.Dead, testWood.move("kolya", Direction.Right));
+		assertEquals(Action.Dead, testWood.move("kolya", Direction.Right));
+		assertEquals(Action.Dead, testWood.move("kolya", Direction.Right));
+		assertEquals(Action.Dead, testWood.move("kolya", Direction.Right));
+		assertEquals(Action.WoodmanNotFound, testWood.move("kolya", Direction.Right));
 	}
 	
 	@Test(expected = Exception.class)
 	public void testException() throws Exception {
-		char[][] wood =  {
-				{'1','0','1'},
-				{'L','0','1'},
-				{'0','K','1'},
-			};
-		TheWood testWood = new TheWood(wood);
+		TheWood testWood = (TheWood) new RealWood(wood);
 		testWood.createWoodman("vasya", new Point(-1,-1));
 	}
 	
 	@Test(expected = Exception.class)
 	public void test2Exception() throws Exception {
-		char[][] wood =  {
-				{'1','0','1'},
-				{'L','0','1'},
-				{'0','K','1'},
-			};
-		TheWood testWood = new TheWood(wood);
-		testWood.createWoodman("vasya", new Point(1,0));
-		testWood.move("vasya", Direction.Up);
+		TheWood test2Wood = (TheWood) new RealWood(wood);
+		test2Wood.createWoodman("vasya", new Point(1,0));
+		test2Wood.move("vasya", Direction.Up);
 	}
 	
 	@Test(expected = Exception.class)
 	public void test3Exception() throws Exception {
-		char[][] wood =  {
-				{'1','0','1'},
-				{'L','0','1'},
-				{'0','K','1'},
-			};
-		TheWood testWood = new TheWood(wood);
-		testWood.createWoodman("vasya", new Point(0,0));
+		TheWood test3Wood = (TheWood) new RealWood(wood);
+		test3Wood.createWoodman("vasya", new Point(0,0));
 	}
 }

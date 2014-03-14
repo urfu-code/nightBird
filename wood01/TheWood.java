@@ -5,7 +5,7 @@ import java.util.Map;
 
 import wood01Interfaces.Wood;
 
-public class TheWood implements Wood {
+public abstract class TheWood implements Wood {
 	
 	protected char[][] wood;
 	protected Map<String,TheWoodman>woodmans;
@@ -86,7 +86,7 @@ public class TheWood implements Wood {
 
 		switch(elements.get(wood[newPosition.getY()][newPosition.getX()])) {
 		
-		case '1'	:
+		case '1':
 			currentAction = Action.Fail;
 			break;
 		case '0':

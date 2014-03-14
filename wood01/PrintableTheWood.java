@@ -4,10 +4,10 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PrintableTheWood extends TheWood {
+
+public abstract class PrintableTheWood extends TheWood {
 	//'┌','─','┬','┐','│','┼','┤','├','└','─','┴','┘','♥','Ⓣ',' ','□'
-	
-	Map<String,Character>graphList;
+	private Map<String,Character>graphList;
 	
 	public PrintableTheWood(char[][] _wood) throws Exception {
 		super(_wood);
@@ -32,7 +32,6 @@ public class PrintableTheWood extends TheWood {
 		graphList.put("A",'□');
 		graphList.put("Trap",'ѻ');
 	}	
-	
 	public void printWood(OutputStream stream) throws Exception
 	{
 		char[] line = new char[wood[0].length];
@@ -51,13 +50,12 @@ public class PrintableTheWood extends TheWood {
 			stream.write((i.GetName() + " (" + i.GetName().charAt(0) + ")" + " - " + i.GetLifeCount() + " live(s)\n").getBytes());
 		}
 	}
-	
 	private char findElement(int line, int column) throws Exception
 	{
-		Point currentPoint = new Point(line,column);
+		Point currentPoint = new Point(column,line);
 		for (TheWoodman i:(super.woodmans).values()) {
 			if (i.GetLocation().equals(currentPoint)) {
-				return i.GetName().charAt(0);
+				return i.GetName().toUpperCase().charAt(0);
 			}
 		}
 		switch ((super.elements).get((super.wood)[line][column])) {
@@ -98,5 +96,12 @@ public class PrintableTheWood extends TheWood {
 		else {
 			return graphList.get("A");
 		}
+	}
+	
+	public Action moveAndPrint(String name, Direction direction,OutputStream stream) throws Exception {
+		Action currentAction;
+		currentAction = super.move(name, direction);
+		this.printWood(stream);
+		return currentAction;
 	}
 }

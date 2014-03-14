@@ -11,11 +11,10 @@ import wood01Interfaces.WoodLoader;
 public class TheWoodLoader implements WoodLoader {
 
 	@Override	
-	public TheWood Load(InputStream stream) throws Exception {
+	public RealWood Load(InputStream stream) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		String s;
-		LinkedList<char[]>woodArrList = new LinkedList<char[]>();
-		char[] woodStr;
+		LinkedList<String>woodArrList = new LinkedList<String>();
 		int x = 0;
 		int y = 0;
 		try {
@@ -25,24 +24,20 @@ public class TheWoodLoader implements WoodLoader {
 				if (s.length() != y) {
 					throw new IOException("непрямоугольный лес!");
 				}
-				woodStr = new char[y];
-				for (int i = 0; i < y; i++) {
-					woodStr[i] = s.charAt(i);
-				}
-				woodArrList.add(woodStr);
+				woodArrList.add(s);
 				s = reader.readLine();
 				x++;
 			}
 			char[][] wood = new char[x][y];
 			for (int i = 0; i < x; i++) {
-				woodStr = woodArrList.removeFirst();
+				s = woodArrList.removeFirst();
 				for (int j = 0; j < y; j++) {
-					wood[i][j] = woodStr[j];
+					wood[i][j] = s.charAt(j);
 				}
 			}
-			return new TheWood(wood);
+			return new RealWood(wood);
 		} catch (IOException e) {
-			System.out.println("Ошибка ввода!");
+			System.out.println("с лесом беда...");
 		}
 		finally {
 			reader.close();
