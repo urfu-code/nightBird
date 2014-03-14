@@ -17,8 +17,8 @@ public class MyWoodTest {
 			wood[i][3]='1';
 		}
 		wood[1][1]='0';
-		wood[1][2]='L';
-		wood[2][1]='0';
+		wood[2][1]='L';
+		wood[1][2]='0';
 		wood[2][2]='K';
 		MyWood W=new MyWood(wood);
 		Point k=new Point(1,1);
@@ -38,8 +38,8 @@ public class MyWoodTest {
 			wood[i][3]='1';
 		}
 		wood[1][1]='0';
-		wood[1][2]='L';
-		wood[2][1]='0';
+		wood[2][1]='L';
+		wood[1][2]='0';
 		wood[2][2]='K';
 		MyWood W=new MyWood(wood);
 		Point k=new Point(1,1);
@@ -59,8 +59,8 @@ public class MyWoodTest {
 			wood[i][3]='1';
 		}
 		wood[1][1]='0';
-		wood[1][2]='L';
-		wood[2][1]='0';
+		wood[2][1]='L';
+		wood[1][2]='0';
 		wood[2][2]='K';
 		MyWood W=new MyWood(wood);
 		Point k=new Point(1,1);
@@ -80,8 +80,8 @@ public class MyWoodTest {
 			wood[i][3]='1';
 		}
 		wood[1][1]='0';
-		wood[1][2]='L';
-		wood[2][1]='0';
+		wood[2][1]='L';
+		wood[1][2]='0';
 		wood[2][2]='K';
 		MyWood W=new MyWood(wood);
 		Point k=new Point(1,1);
@@ -101,13 +101,13 @@ public class MyWoodTest {
 			wood[i][3]='1';
 		}
 		wood[1][1]='0';
-		wood[1][2]='L';
-		wood[2][1]='0';
+		wood[2][1]='L';
+		wood[1][2]='0';
 		wood[2][2]='K';
 		MyWood W=new MyWood(wood);
 		Point k=new Point(1,1);
 		W.createWoodman("A", k);
-		W.move("A",Direction.Down);
+		W.move("A",Direction.Down); //ok
 		assertEquals(W.move("A",Direction.Right) , Action.Dead);
 	}
 
@@ -123,8 +123,8 @@ public class MyWoodTest {
 			wood[i][3]='1';
 		}
 		wood[1][1]='0';
-		wood[1][2]='L';
-		wood[2][1]='0';
+		wood[2][1]='L';
+		wood[1][2]='0';
 		wood[2][2]='K';
 		MyWood W=new MyWood(wood);
 		Point k1=new Point(1,1);
@@ -151,12 +151,12 @@ public class MyWoodTest {
 			wood[i][3]='1';
 		}
 		wood[1][1]='0';
-		wood[1][2]='L';
-		wood[2][1]='0';
+		wood[2][1]='L';
+		wood[1][2]='0';
 		wood[2][2]='K';
 		MyWood W=new MyWood(wood);
-		Point k=new Point(1,2);
+		Point k=new Point(2,1);
 		W.createWoodman("A", k);
-		assertEquals(W.move("A",Direction.Up) , Action.Life);
+		assertEquals(W.move("A",Direction.None) , Action.Life);
 	}
 }
