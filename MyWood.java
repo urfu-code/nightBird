@@ -48,6 +48,11 @@ public class MyWood implements Wood {
 				if (m_wood[x][y]=='K') {
 					m_woodmanList.get(name).Kill();
 					result=Action.Dead;
+					m_woodmanList.get(name).SetLocation(n); 
+					if(m_woodmanList.get(name).GetLifeCount()<=-1) {
+						m_woodmanList.remove(name);
+						result=Action.WoodmanNotFound;
+						}
 				}
 				if (m_wood[x][y]=='1') {
 					if(m_wood[i][j]=='K') 
@@ -69,6 +74,7 @@ public class MyWood implements Wood {
 				if (m_wood[x][y]=='L') {
 					m_woodmanList.get(name).AddLife();
 					result=Action.Life; 
+					m_woodmanList.get(name).SetLocation(n); 
 				}
 				if(m_woodmanList.get(name).GetLifeCount()<=-1) {
 				m_woodmanList.remove(name);
