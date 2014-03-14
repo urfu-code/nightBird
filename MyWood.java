@@ -76,10 +76,7 @@ public class MyWood implements Wood {
 					result=Action.Life; 
 					m_woodmanList.get(name).SetLocation(n); 
 				}
-				if(m_woodmanList.get(name).GetLifeCount()<=-1) {
-				m_woodmanList.remove(name);
-				result=Action.WoodmanNotFound;
-				}
+				
 			}
 		return result;
 	}
