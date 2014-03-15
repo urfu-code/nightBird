@@ -53,6 +53,7 @@ public class Woodman implements IWoodman{
 		m_location = m_start;
 	}
 	
+	@Override
 	public boolean equals(Object obj){
         if (this == obj)
             return true;
@@ -60,6 +61,12 @@ public class Woodman implements IWoodman{
             return false;
         Woodman woodman = (Woodman)obj;
         return (this.GetName() == woodman.GetName());
+    }
+	
+	@Override
+	public int hashCode(){
+        Woodman woodman = (Woodman)this;
+        return woodman.GetName().hashCode() + 17*37;
     }
 
 }
