@@ -1,33 +1,46 @@
 public class Point {
-	private final int x;
-	private final int y;
+    private final int x;
+    private final int y;
 
-	public Point(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
+    @Override
+    public boolean equals(Object obj) {
 
-	public int getX() {
-		return x;
-	}
+        Point point = (Point) obj;
+        if (this.x == point.x && this.y == point.y) {
+            return true;
+        }
+        return false;
+    }
 
-	public int getY() {
-		return y;
-	}
 
-	public Point MoveUp() {
-		return new Point(x, y - 1);
-	}
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
 
-	public Point MoveDown() {
-		return new Point(x, y + 1);
-	}
+    public int getX() {
+        return x;
+    }
 
-	public Point MoveLeft() {
-		return new Point(x - 1, y);
-	}
+    public int getY() {
+        return y;
+    }
 
-	public Point MoveRigth() {
-		return new Point(x + 1, y);
-	}
+    public Point MoveUp() {
+        return new Point(x - 1, y);
+    }
+
+    public Point MoveDown() {
+        return new Point(x + 1, y);
+    }
+
+    public Point MoveLeft() {
+        return new Point(x, y - 1);
+    }
+
+    public Point MoveRigth() {
+        return new Point(x, y + 1);
+    }
+
+
 }
