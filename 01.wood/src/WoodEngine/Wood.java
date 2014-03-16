@@ -9,16 +9,8 @@ public class Wood implements IWood {
 	 * 2 - trap
 	 * 3 - life
 	 */
-	private char[][] m_woodMap;
-	private HashSet<Woodman> m_woodmansSet;
-	
-	private void eraseWoodman(String name){
-		for (Woodman curWM : m_woodmansSet) {
-			if (curWM.GetName() == name) {
-				m_woodmansSet.remove(curWM);
-			}
-		}
-	}
+	protected char[][] m_woodMap;
+	protected HashSet<Woodman> m_woodmansSet;
 	
 	public Wood (Character[] objs, int height, int width){
 		m_woodmansSet = new HashSet<Woodman>();
@@ -26,6 +18,14 @@ public class Wood implements IWood {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				m_woodMap[j][i] = objs[i*width + j];
+			}
+		}
+	}
+	
+	private void eraseWoodman(String name){
+		for (Woodman curWM : m_woodmansSet) {
+			if (curWM.GetName() == name) {
+				m_woodmansSet.remove(curWM);
 			}
 		}
 	}
@@ -46,7 +46,20 @@ public class Wood implements IWood {
 				Point curLoc = curWM.GetLocation();
 				Point wannabeLoc = curLoc.MoveTo(direction);
 				switch(m_woodMap[wannabeLoc.getX()][wannabeLoc.getY()]){
-				case '1': return Action.Fail; // wall
+				case '1': {
+					if(m_woodMap[curLoc.getX()][curLoc.getY()] == '2'){
+						if (curWM.Kill()) {
+							eraseWoodman(name);
+							return Action.WoodmanNotFound;
+						}
+						return Action.Dead;
+					}
+					if(m_woodMap[curLoc.getX()][curLoc.getY()] == '3'){
+						curWM.AddLife();
+						return Action.Life;
+					}
+					return Action.Fail; // wall
+				}
 				case '0': { // floor
 					curWM.SetLocation(wannabeLoc);
 					return Action.Ok;
