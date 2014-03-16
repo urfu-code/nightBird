@@ -33,8 +33,8 @@ public class testWood {
 		assertTrue(w.move("nurofen", Direction.Down) == Action.Life); // на жизнь
 		assertTrue(w.move("nurofen", Direction.Left) == Action.Dead); // на капкан
 		assertTrue(w.move("nurofen", Direction.None) == Action.Dead); // на капкане
-		assertTrue(w.move("nurofen", Direction.Left) == Action.Dead); // в стену
-		assertTrue(w.move("nurofen", Direction.Down) == Action.Dead); // в стену
+		assertTrue(w.move("nurofen", Direction.Left) == Action.Fail); // в стену
+		assertTrue(w.move("nurofen", Direction.Down) == Action.Fail); // в стену
 		assertTrue(w.move("nurofen", Direction.None) == Action.WoodmanNotFound); // на капкане
 	}
 
