@@ -136,7 +136,6 @@ public class MyWoodTest {
 		W.move("A",Direction.Left); //ok
 		W.move("A",Direction.Right); //dead
 		W.move("A",Direction.Left); //ok
-		W.move("A",Direction.Right); //woodmannotfound
 		assertEquals(W.move("A",Direction.Right) , Action.WoodmanNotFound);
 	}
 	@Test
@@ -158,5 +157,25 @@ public class MyWoodTest {
 		Point k=new Point(2,1);
 		W.createWoodman("A", k);
 		assertEquals(W.move("A",Direction.None) , Action.Life);
+	}
+	@Test
+	public void testMove8() throws CodeException {
+		char[][]wood = new char[4][4];
+		for (int j=0;j<4;j++) {
+			wood[0][j]='1';
+			wood[3][j]='1';
+		}
+		for (int i=0;i<4;i++) {
+			wood[i][0]='1';
+			wood[i][3]='1';
+		}
+		wood[1][1]='0';
+		wood[2][1]='L';
+		wood[1][2]='0';
+		wood[2][2]='K';
+		MyWood W=new MyWood(wood);
+		Point k=new Point(2,1);
+		W.createWoodman("A", k);	
+		assertEquals(W.move("A",Direction.Up) , Action.Life);
 	}
 }
