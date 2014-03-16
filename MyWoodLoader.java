@@ -13,22 +13,22 @@ public class MyWoodLoader implements WoodLoader {
 		List<String> list = new LinkedList<String>();
 		Scanner sc = new Scanner(stream);
 		try {
-			
+				if (!sc.hasNextLine()) throw new CodeException("File is empty");
+				else{
 			while (sc.hasNextLine()) {
 				list.add(sc.nextLine());
 				m++;
 			}
 			n = list.get(0).length();
+				}
 			m_wood = new char[m][n];
 			for (int j = 0; j < m; j++) {
 				if (list.get(j).length() != n)
 					throw new CodeException("Input correct world");
 			}
 			for (int i = 0; i < m; i++) {
-				m_wood[i] = list.get(i).toCharArray();
-				
+				m_wood[i] = list.get(i).toCharArray();				
 			}
-
 		} finally {
 			sc.close();
 		}
