@@ -38,6 +38,7 @@ public class MyWood implements Wood {
 
 			switch (m_wood[newPoint.getX()][newPoint.getY()]) {
 			case '1': {
+				
 				if(m_wood[n.getX()][n.getY()]=='K') {
 					m_woodmanList.get(name).Kill();
 					result=Action.Dead;
@@ -50,7 +51,8 @@ public class MyWood implements Wood {
 					m_woodmanList.get(name).AddLife();
 					result=Action.Life;
 				}
-				else 
+			
+				if(m_wood[n.getX()][n.getY()]=='0')
 					result=Action.Fail;
 			}
 			break;
