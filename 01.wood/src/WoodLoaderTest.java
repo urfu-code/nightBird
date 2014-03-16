@@ -13,11 +13,11 @@ public class WoodLoaderTest {
 
 	@Test
 	public void testLoad() throws IOException {
-		File file = new File("c://Users//пк//workspace//NightBird//src//input.txt");
+		File file = new File("src//input.txt");
 		try {
 			FileInputStream iStream = new FileInputStream(file);
 			try {
-				IWood ofChristmasTrees = wl.Load(iStream);
+				Wood ofChristmasTrees = wl.Load(iStream);
 				for (int i = 0; i < 9; i++) {
 					assertEquals((Character) '1', ofChristmasTrees.getChar(new Point(i, 0)));
 					assertEquals((Character) '1', ofChristmasTrees.getChar(new Point(i, 7)));
@@ -41,6 +41,24 @@ public class WoodLoaderTest {
 			e.printStackTrace();
 		}
 				
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void testWrongInput() throws IOException { 
+		File file = new File("src//wrongInput.txt");
+		try {
+			FileInputStream iStream = new FileInputStream(file);
+			try {
+				@SuppressWarnings("unused")
+				Wood ofChristmasTrees = wl.Load(iStream);
+			}
+			finally {
+				iStream.close();
+			}
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

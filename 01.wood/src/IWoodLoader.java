@@ -10,5 +10,5 @@ public interface IWoodLoader {
 	 * @param stream поток с информацией о лесе.
 	 * @return Лес
 	 */
-	IWood Load(FileInputStream stream);
+	Wood Load(FileInputStream stream);
 }

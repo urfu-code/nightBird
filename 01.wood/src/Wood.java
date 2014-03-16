@@ -14,63 +14,57 @@ public class Wood implements IWood {
 		this.labWidth = width;
 	}
 	
-	public Character getChar(Point location) {
+	Character getChar(Point location) {
 		return labyrinth.get(location);
 	}
 	
-	public Woodman getWoodman(String name) {
+	Woodman getWoodman(String name) {
 		return listOfWoodmen.get(name);
 	}
 
 	@Override
 	public void createWoodman(String name, Point start) {
-		if (!listOfWoodmen.containsKey(name)) // имя уникально
-			listOfWoodmen.put(name, new Woodman(name, start));
-		else throw new RuntimeException("Такой вудмен уже есть в лесу!");
+		if (start.getX() > 0 && start.getY() > 0 && start.getX() < labLength - 1 && start.getY() < labWidth - 1)
+			if (!listOfWoodmen.containsKey(name)) // имя уникально
+				listOfWoodmen.put(name, new Woodman(name, start));
+			else throw new WoodmanExistsException("Такой вудмен уже есть в лесу!");		
+		else throw new WoodmanOnTheWallException("Нельзя создавать персонажа на стене!");
 	}
 
-	public Action result(Character symbol, String name) {
+	private Action result(Character symbol, String name, Point currentLocation) { 
 		switch (symbol) {  // символ лабиринта, на котором мы стоим
-		case '0' : return Action.Ok;
+		case '0' : 
+			getWoodman(name).SetLocation(currentLocation);
+			return Action.Ok;
 		case '1' : return Action.Fail;
-		case 'L' : getWoodman(name).AddLife(); return Action.Life;
-		case 'K' : 
+		case 'L' :
+			getWoodman(name).SetLocation(currentLocation);
+			getWoodman(name).AddLife(); return Action.Life;
+		case 'K' :
+			getWoodman(name).SetLocation(currentLocation);
 			if (getWoodman(name).Kill()) {
-				getWoodman(name).MoveToStart();
+				return Action.Dead;
 			}
 			else {
 					listOfWoodmen.remove(name);
-				}
-			return Action.Dead;
-		}
+					return Action.WoodmanNotFound;
+				}		
+		}		
 		return Action.Ok;
 	}
 	@Override
-	public Action move(String name, Direction direction) throws RuntimeException, WoodmanNotFound {
+	public Action move(String name, Direction direction) throws RuntimeException {
 		if (!listOfWoodmen.containsKey(name))
-			throw new WoodmanNotFound("Нет такого вудмена в лесу!");
-				
+			return Action.WoodmanNotFound;
 		switch (direction) {
-		case Up :
-			getWoodman(name).SetLocation(getWoodman(name).GetLocation().MoveUp());
-			if (getWoodman(name).GetLocation().getY() < 0)
-				throw new RuntimeException("Выход за границы лабиринта!");
-			return result (getChar(getWoodman(name).GetLocation()), name);
+		case Up : // убрала условие на выход за границы, т.к. нельзя создать вудмена на стене или вне её, следовательно, за границу никак не выйти
+			return result (getChar(getWoodman(name).GetLocation().MoveUp()), name, getWoodman(name).GetLocation().MoveUp());
 		case Down :
-			getWoodman(name).SetLocation(getWoodman(name).GetLocation().MoveDown());
-			if (getWoodman(name).GetLocation().getY() > labWidth)
-				throw new RuntimeException("Выход за границы лабиринта!");
-			return result (getChar(getWoodman(name).GetLocation()), name);
+			return result (getChar(getWoodman(name).GetLocation().MoveDown()), name, getWoodman(name).GetLocation().MoveDown());
 		case Right :
-			getWoodman(name).SetLocation(getWoodman(name).GetLocation().MoveRigth());
-			if (getWoodman(name).GetLocation().getX() > labLength)
-				throw new RuntimeException("Выход за границы лабиринта!");
-			return result (getChar(getWoodman(name).GetLocation()), name);
+			return result (getChar(getWoodman(name).GetLocation().MoveRigth()), name, getWoodman(name).GetLocation().MoveRigth());
 		case Left :
-			getWoodman(name).SetLocation(getWoodman(name).GetLocation().MoveLeft());
-			if (getWoodman(name).GetLocation().getX() < 0)
-				throw new RuntimeException("Выход за границы лабиринта!");
-			return result (getChar(getWoodman(name).GetLocation()), name);
+			return result (getChar(getWoodman(name).GetLocation().MoveLeft()), name, getWoodman(name).GetLocation().MoveLeft());
 		case None : break;
 		default: throw new RuntimeException("Введено неверное направление!");
 		}
