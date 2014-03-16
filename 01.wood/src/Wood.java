@@ -1,4 +1,4 @@
-﻿public interface Wood {
+public interface Wood {
     /**
      * Создает нового лесного жителя.
      *

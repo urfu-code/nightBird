@@ -14,7 +14,7 @@ public class MyWoodTest extends TestCase {
         MyWood wood = (MyWood) woodLoaderCreate.Load(fileInputStream);
         wood.createWoodman("man", new Point(0, 2));
         wood.createWoodman("man1", new Point(0, 2));
-        assertEquals(wood.woodmansCatalog.containsKey("man"), wood.woodmansCatalog.containsKey("man1"));
+        assertEquals(wood.getWoodman("man"), wood.getWoodman("man1"));
 
 
     }
@@ -30,10 +30,11 @@ public class MyWoodTest extends TestCase {
         assertEquals(Action.Life, wood.move("man", Direction.Down));
         assertEquals(Action.Ok, wood.move("man", Direction.Left));
         assertEquals(Action.Dead, wood.move("man", Direction.Down));
-        assertEquals(Action.Dead, wood.move("man", Direction.None));
-        assertEquals(Action.Dead, wood.move("man", Direction.None));
-        assertEquals(Action.Dead, wood.move("man", Direction.None));
+        wood.move("man", Direction.None);
+        wood.move("man", Direction.None);
+        wood.move("man", Direction.None);
         assertEquals(Action.WoodmanNotFound, wood.move("man", Direction.None));
+        assertEquals(Action.WoodmanNotFound, wood.move("fjnsejkns", Direction.Down));
 
     }
 

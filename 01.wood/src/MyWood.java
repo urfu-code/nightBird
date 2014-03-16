@@ -5,37 +5,49 @@ import java.util.HashMap;
  * Created by Алексей on 05.03.14.
  */
 public class MyWood implements Wood {
-    ArrayList<ArrayList<String>> dataAboutWood = new ArrayList<ArrayList<String>>();
-    HashMap<String, WoodCreate> woodmansCatalog = new HashMap<String, WoodCreate>();
+    ArrayList<String> dataAboutWood = new ArrayList<String>();
+    private HashMap<String, WoodCreate> woodmansCatalog = new HashMap<String, WoodCreate>();
 
-    public MyWood(ArrayList<ArrayList<String>> wood) {
-        dataAboutWood = wood;
+    public MyWood(ArrayList<String> strings) {
+        dataAboutWood = strings;
 
+    }
+
+    public MyWood() {
     }
 
     @Override
     public boolean equals(Object obj) {
-        MyWood wood1 = (MyWood) obj;
-        if (wood1.dataAboutWood.size() == this.dataAboutWood.size()) {
-            for (int i = 0; i < this.dataAboutWood.size(); i++) {
-                if (!wood1.dataAboutWood.get(i).equals(this.dataAboutWood.get(i))) {
-                    return false;
+        if (obj instanceof MyWood) {
+            MyWood wood1 = (MyWood) obj;
+            if (wood1.dataAboutWood.size() == this.dataAboutWood.size()) {
+                for (int i = 0; i < this.dataAboutWood.size(); i++) {
+                    if (!wood1.dataAboutWood.get(i).equals(this.dataAboutWood.get(i))) {
+                        return false;
+                    }
                 }
-            }
-        } else return false;
-        return true;
+            } else return false;
+            return true;
+        }
+        return false;
+
     }
 
     @Override
     public void createWoodman(String name, Point start) throws Exception {
         if (!woodmansCatalog.containsKey(name)) {
-            char c = dataAboutWood.get(start.getX()).get(0).charAt(start.getY());
+            char c = dataAboutWood.get(start.getX()).charAt(start.getY());
             if (c != '1') {
                 woodmansCatalog.put(name, new WoodCreate(name, start));
             } else throw new Exception("здесь стена");
-        }
+        } else throw new Exception("игрок с таким именем уже существует");
     }
 
+    public WoodCreate getWoodman(String str) throws Exception {
+        if (woodmansCatalog.containsKey(str)) {
+            return woodmansCatalog.get(str);
+        } else throw new Exception("такого персонажа нет");
+    }
     @Override
     public Action move(String name, Direction direction) throws Exception {
         Point point = null;
@@ -65,7 +77,7 @@ public class MyWood implements Wood {
             return Action.Fail;
 
         }
-        if ((point.getY() < 0) || (point.getY() > dataAboutWood.get(point.getX()).get(0).length())) {
+        if ((point.getY() < 0) || (point.getY() > dataAboutWood.get(point.getX()).length())) {
             System.out.println("неправильная координата x =" + woodmansCatalog.get(name).currentPosition.getX());
             return Action.Fail;
         }
@@ -75,7 +87,7 @@ public class MyWood implements Wood {
     }
 
     private Action yesOrNo(Point point, WoodCreate character) {
-        String buff = dataAboutWood.get(point.getX()).get(0);
+        String buff = dataAboutWood.get(point.getX());
         if (buff.charAt(point.getY()) == '0') {
             character.SetLocation(point);
             return Action.Ok;

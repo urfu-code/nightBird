@@ -10,16 +10,15 @@ import java.util.ArrayList;
 public class WoodLoaderCreate implements WoodLoader {
     @Override
     public Wood Load(InputStream stream) throws IOException {
-        ArrayList<ArrayList<String>> strings = new ArrayList<ArrayList<String>>();
-        ArrayList<String> str = new ArrayList<String>();
+        ArrayList<String> strings = new ArrayList<String>();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         String line;
         try {
             while ((line = reader.readLine()) != null) {
-                str.add(line);
-                strings.add(new ArrayList<String>(str));
-                str.clear();
+
+                strings.add(line);
+
             }
         } catch (IOException e) {
             e.printStackTrace();

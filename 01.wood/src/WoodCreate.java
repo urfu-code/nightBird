@@ -18,6 +18,15 @@ public class WoodCreate implements Woodman {
 
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof WoodCreate) {
+            if ((this.nameOfWoodman.equals(((WoodCreate) obj).nameOfWoodman)) || this.currentPosition.equals(((WoodCreate) obj).currentPosition)) {
+                return true;
+            } else return false;
+        }
+        return false;
+    }
 
     @Override
     public int GetLifeCount() {
@@ -33,7 +42,9 @@ public class WoodCreate implements Woodman {
     public boolean Kill() {
         if (lifeCount >= 0) {
             lifeCount = lifeCount - 1;
-            return true;
+            if (lifeCount >= 0) {
+                return true;
+            } else return false;
         } else
             return false;
     }
