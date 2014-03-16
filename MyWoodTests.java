@@ -178,4 +178,47 @@ public class MyWoodTest {
 		W.createWoodman("A", k);	
 		assertEquals(W.move("A",Direction.Up) , Action.Life);
 	}
+	@Test
+	public void testMove9() throws CodeException {
+		char[][]wood = new char[4][4];
+		for (int j=0;j<4;j++) {
+			wood[0][j]='1';
+			wood[3][j]='1';
+		}
+		for (int i=0;i<4;i++) {
+			wood[i][0]='1';
+			wood[i][3]='1';
+		}
+		wood[1][1]='0';
+		wood[2][1]='L';
+		wood[1][2]='0';
+		wood[2][2]='K';
+		MyWood W=new MyWood(wood);
+		Point k=new Point(2,2);
+		W.createWoodman("A", k);	
+		assertEquals(W.move("A",Direction.Right) , Action.Dead);
+	}
+	@Test
+	public void testMove10() throws CodeException {
+		char[][]wood = new char[4][4];
+		for (int j=0;j<4;j++) {
+			wood[0][j]='1';
+			wood[3][j]='1';
+		}
+		for (int i=0;i<4;i++) {
+			wood[i][0]='1';
+			wood[i][3]='1';
+		}
+		wood[1][1]='0';
+		wood[2][1]='L';
+		wood[1][2]='0';
+		wood[2][2]='K';
+		MyWood W=new MyWood(wood);
+		Point k=new Point(2,2);
+		W.createWoodman("A", k);	
+		W.move("A",Direction.Right);
+		W.move("A",Direction.Right);
+		W.move("A",Direction.Right);
+		assertEquals(W.move("A",Direction.Right) , Action.WoodmanNotFound);
+	}
 }
