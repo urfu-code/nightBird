@@ -1,21 +1,19 @@
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
 public class MyWoodLoader implements WoodLoader {
 
-	private char[][] m_wood;
-	
-
 	public Wood Load(InputStream stream) throws IOException, CodeException {
 		int n = 0;
 		int m = 0;
+		char[][] m_wood;
 		List<String> list = new LinkedList<String>();
 		Scanner sc = new Scanner(stream);
 		try {
+			
 			while (sc.hasNextLine()) {
 				list.add(sc.nextLine());
 				m++;
