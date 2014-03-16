@@ -48,7 +48,9 @@ public class Wood implements IWood {
 				switch(m_woodMap[wannabeLoc.getX()][wannabeLoc.getY()]){
 				case '1': {
 					if(m_woodMap[curLoc.getX()][curLoc.getY()] == '2'){
-						curWM.Kill();
+						if (curWM.Kill()) {
+							eraseWoodman(name);
+						}
 					}
 					if(m_woodMap[curLoc.getX()][curLoc.getY()] == '3'){
 						curWM.AddLife();
