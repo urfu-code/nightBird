@@ -20,7 +20,7 @@ public class WoodTest {
 			try {
 				Wood hyrule = wl.Load(stream);
 				hyrule.createWoodman("Zelda", testPoint);
-				assertEquals(new Woodman("Zelda", new Point(1, 1)), hyrule.getWoodman("Zelda")); // не знаю, как можно по-другому проверить
+				assertEquals(new Woodman("Zelda", new Point(1, 1)), hyrule.getWoodman("Zelda"));
 			} finally {
 				stream.close();
 			}
@@ -35,7 +35,7 @@ public class WoodTest {
 		try {
 			FileInputStream stream = new FileInputStream(file);
 			try {
-				IWood hyrule = wl.Load(stream);
+				Wood hyrule = wl.Load(stream);
 				hyrule.createWoodman("Zelda", testPoint);
 				hyrule.createWoodman("Zelda", new Point(4, 1));
 			} finally {
@@ -53,7 +53,7 @@ public class WoodTest {
 		try {
 			FileInputStream stream = new FileInputStream(file);
 			try {
-				IWood hyrule = wl.Load(stream);
+				Wood hyrule = wl.Load(stream);
 				hyrule.createWoodman("Epona", testPoint);
 
 				assertEquals(Action.Ok, hyrule.move("Epona", Direction.Right));
@@ -71,7 +71,7 @@ public class WoodTest {
 		try {
 			FileInputStream stream = new FileInputStream(file);
 			try {
-				IWood hyrule = wl.Load(stream);
+				Wood hyrule = wl.Load(stream);
 				hyrule.createWoodman("Epona", testPoint);
 
 				assertEquals(Action.Fail, hyrule.move("Epona", Direction.Left));
@@ -89,7 +89,7 @@ public class WoodTest {
 		try {
 			FileInputStream stream = new FileInputStream(file);
 			try {
-				IWood hyrule = wl.Load(stream);
+				Wood hyrule = wl.Load(stream);
 				hyrule.createWoodman("Dodongo", new Point(7, 2));
 
 				assertEquals(Action.Dead, hyrule.move("Dodongo", Direction.Up));
@@ -108,7 +108,7 @@ public class WoodTest {
 		try {
 			FileInputStream stream = new FileInputStream(file);
 			try {
-				IWood hyrule = wl.Load(stream);
+				Wood hyrule = wl.Load(stream);
 				hyrule.createWoodman("Link", new Point(7, 5));
 
 				assertEquals(Action.Life, hyrule.move("Link", Direction.Down));
@@ -126,7 +126,7 @@ public class WoodTest {
 		try {
 			FileInputStream stream = new FileInputStream(file);
 			try {
-				IWood hyrule = wl.Load(stream);
+				Wood hyrule = wl.Load(stream);
 				hyrule.createWoodman("Epona", new Point(0, 0));
 			} finally {
 				stream.close();
@@ -143,7 +143,7 @@ public class WoodTest {
 		try {
 			FileInputStream stream = new FileInputStream(file);
 			try {
-				IWood hyrule = wl.Load(stream);
+				Wood hyrule = wl.Load(stream);
 				hyrule.createWoodman("Great Deku Tree", testPoint);
 				assertEquals(Action.WoodmanNotFound, hyrule.move("Epona", Direction.Right));
 			} finally {
@@ -161,7 +161,7 @@ public class WoodTest {
 		try {
 			FileInputStream stream = new FileInputStream(file);
 			try {
-				IWood hyrule = wl.Load(stream);
+				Wood hyrule = wl.Load(stream);
 				hyrule.createWoodman("Dodongo", new Point(7, 2));
 				for (int i = 0; i < 4; i++) {
 					hyrule.move("Dodongo", Direction.Up);
