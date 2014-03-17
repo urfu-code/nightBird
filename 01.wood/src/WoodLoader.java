@@ -18,20 +18,22 @@ public class WoodLoader implements IWoodLoader {
 				String labLine = "";
 				int numberOfLine = 0; // координата y, за x будет i
 				
-				if (sc.hasNext()){					
+				if (sc.hasNext()) {					
 					labLine = sc.nextLine();
 					length = labLine.length();
 					LoadLine(lab, labLine, numberOfLine++);
+			//		System.out.print(System.getProperty("line.separator"));
 				}
 				while (sc.hasNext()) {
 					labLine = sc.nextLine();
 					if (labLine.length() != length)
 						throw new RuntimeException("Лабиринт не прямоугольный!"); 
-				
+
 					LoadLine(lab, labLine, numberOfLine++);
+					//System.out.print(System.getProperty("line.separator"));
 				}
 				length = labLine.length();
-				width = numberOfLine; 				
+				width = numberOfLine; 	
 			}
 			finally {
 				stream.close();
@@ -44,10 +46,11 @@ public class WoodLoader implements IWoodLoader {
 		return ofOaks;
 	}
 	
-	private void LoadLine(HashMap<Point, Character> lab, String labLine, int numberOfLine){
+	private void LoadLine(HashMap<Point, Character> lab, String labLine, int numberOfLine) {
 		for (int i = 0; i < labLine.length(); i++) {
 			Character tempChar = labLine.charAt(i);
 			lab.put(new Point(i, numberOfLine), tempChar);
+		//	System.out.print(tempChar);
 		}
 	}
 

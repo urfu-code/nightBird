@@ -3,10 +3,10 @@ import java.util.HashMap;
 
 
 public class Wood implements IWood {
-	private HashMap<Point, Character> labyrinth; // инфа по стенам и тропинкам
-	private int labLength = 0;
-	private int labWidth = 0;
-	private HashMap<String, Woodman> listOfWoodmen = new HashMap<String, Woodman>(); // список игроков
+	protected HashMap<Point, Character> labyrinth; // инфа по стенам и тропинкам
+	protected int labLength = 0;
+	protected int labWidth = 0;
+	protected HashMap<String, Woodman> listOfWoodmen = new HashMap<String, Woodman>(); // список игроков
 	
 	Wood(HashMap<Point, Character> lab, int length, int width) {
 		this.labyrinth = lab;
@@ -31,17 +31,22 @@ public class Wood implements IWood {
 		else throw new WoodmanOnTheWallException("Нельзя создавать персонажа на стене!");
 	}
 
-	private Action result(Character symbol, String name, Point currentLocation) { 
-		switch (symbol) {  // символ лабиринта, на котором мы стоим
+	private Action result(Point currentLocation, String name, Point newLocation) { 
+		switch (getChar(newLocation)) {  // символ лабиринта, на который мы встанем
 		case '0' : 
-			getWoodman(name).SetLocation(currentLocation);
+			getWoodman(name).SetLocation(newLocation);
 			return Action.Ok;
-		case '1' : return Action.Fail;
+		case '1' : 
+			if (getChar(currentLocation) == 'K')
+				result(currentLocation, name, currentLocation);
+			if (getChar(currentLocation) == 'L')
+				result(currentLocation, name, currentLocation);
+			return Action.Fail;
 		case 'L' :
-			getWoodman(name).SetLocation(currentLocation);
+			getWoodman(name).SetLocation(newLocation);
 			getWoodman(name).AddLife(); return Action.Life;
 		case 'K' :
-			getWoodman(name).SetLocation(currentLocation);
+			getWoodman(name).SetLocation(newLocation);
 			if (getWoodman(name).Kill()) {
 				return Action.Dead;
 			}
@@ -49,7 +54,7 @@ public class Wood implements IWood {
 					listOfWoodmen.remove(name);
 					return Action.WoodmanNotFound;
 				}		
-		}		
+		}
 		return Action.Ok;
 	}
 	@Override
@@ -57,14 +62,14 @@ public class Wood implements IWood {
 		if (!listOfWoodmen.containsKey(name))
 			return Action.WoodmanNotFound;
 		switch (direction) {
-		case Up : // убрала условие на выход за границы, т.к. нельзя создать вудмена на стене или вне её, следовательно, за границу никак не выйти
-			return result (getChar(getWoodman(name).GetLocation().MoveUp()), name, getWoodman(name).GetLocation().MoveUp());
+		case Up : // нет условия на выход за границы, т.к. нельзя создать вудмена на стене или вне её, следовательно, за границу никак не выйти
+			return result (getWoodman(name).GetLocation(), name, getWoodman(name).GetLocation().MoveUp());
 		case Down :
-			return result (getChar(getWoodman(name).GetLocation().MoveDown()), name, getWoodman(name).GetLocation().MoveDown());
+			return result (getWoodman(name).GetLocation(), name, getWoodman(name).GetLocation().MoveDown());
 		case Right :
-			return result (getChar(getWoodman(name).GetLocation().MoveRigth()), name, getWoodman(name).GetLocation().MoveRigth());
+			return result (getWoodman(name).GetLocation(), name, getWoodman(name).GetLocation().MoveRigth());
 		case Left :
-			return result (getChar(getWoodman(name).GetLocation().MoveLeft()), name, getWoodman(name).GetLocation().MoveLeft());
+			return result (getWoodman(name).GetLocation(), name, getWoodman(name).GetLocation().MoveLeft());
 		case None : break;
 		default: throw new RuntimeException("Введено неверное направление!");
 		}
