@@ -9,7 +9,14 @@ import org.junit.Test;
 
 
 public class WoodLoaderTest {
-
+	/*
+	 * 	11111111111
+		1000L110001
+		10LK1000101
+		10000001101
+		1K0000001L1
+		11111111111
+	 */
 	@Test
 	public void testLoad() throws IOException {
 		File file = new File("wood.txt");

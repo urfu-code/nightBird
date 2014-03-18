@@ -31,8 +31,8 @@ public class Point {
 		return new Point(x + 1, y);
 	}
 	
-	public boolean equals(Point one, Point two){
-		if((one.getX() == two.getX()) && (one.getY() == two.getY())){
+	public boolean equals(Point one){
+		if((one.getX() == this.getX()) && (one.getY() == this.getY())){
 			return true;
 		}
 		return false;
