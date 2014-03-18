@@ -5,13 +5,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public abstract class PrintableTheWood extends TheWood {
+
+public class PrintableTheWood extends TheWood {
 	//'┌','─','┬','┐','│','┼','┤','├','└','─','┴','┘','♥','Ⓣ',' ','□'
+    //'α','β','γ','δ','ε','ζ','η','θ','ι','κ','λ','μ','ν','ξ','ο','π','ρ','ς','σ','τ','υ','φ','χ','ψ','ω'	
 	private Map<String,Character>graphList;
+	private Map<String,Character>woodmanNames;
+	private char[] nameList;
+	private OutputStream stream;
 	
-	public PrintableTheWood(char[][] _wood) throws Exception {
+	private char getElement(int i,int j) {
+		return wood[i][j];
+	}
+	
+	public PrintableTheWood(char[][] _wood,OutputStream _stream) throws Exception {
 		super(_wood);
+		stream = _stream;
 		graphList = new HashMap<String,Character>();
+		woodmanNames = new HashMap<String,Character>();
 		graphList.put("U", '│');
 		graphList.put("D", '│');
 		graphList.put("L", '─');
@@ -31,12 +42,13 @@ public abstract class PrintableTheWood extends TheWood {
 		graphList.put("0",' ');
 		graphList.put("A",'□');
 		graphList.put("Trap",'ѻ');
+		nameList = new char[]{'α','β','γ','δ','ε','ζ','η','θ','ι','κ','λ','μ','ν','ξ','ο','π','ρ','ς','σ','τ','υ','φ','χ','ψ','ω'};	
 	}	
-	public void printWood(OutputStream stream) throws Exception
+	private void printWood(OutputStream stream) throws Exception
 	{
 		char[] line = new char[wood[0].length];
-		for (int i = 0; i < super.wood.length; i++) {
-			for (int j = 0; j < super.wood[0].length; j++) {
+		for (int i = 0; i < wood.length; i++) {
+			for (int j = 0; j < wood[0].length; j++) {
 				line[j] = findElement(i,j);
 			}
 			String str = new String(line);
@@ -46,19 +58,33 @@ public abstract class PrintableTheWood extends TheWood {
 		stream.write(("♥" + " - live\n").getBytes());
 		stream.write(("ѻ" + " - trap\n").getBytes());
 		stream.write("------------\n".getBytes());
-		for (TheWoodman i:(super.woodmans).values()) {
-			stream.write((i.GetName() + " (" + i.GetName().charAt(0) + ")" + " - " + i.GetLifeCount() + " live(s)\n").getBytes());
+		for (TheWoodman i:woodmans.values()) {
+			stream.write((i.GetName() + " (" + getWoodmanName(i.GetName()) + ")" + " - " + i.GetLifeCount() + " live(s)\n").getBytes());
 		}
 	}
+	private char getWoodmanName(String name) throws Exception {
+		if (woodmanNames.containsKey(name)) {
+			return woodmanNames.get(name);
+		}
+		for (int i = 0; i < nameList.length; i++) {
+			if (nameList[i] != 'N') {
+				woodmanNames.put(name, nameList[i]);
+				nameList[i] = 'N';
+				return woodmanNames.get(name);
+			}
+		}
+		throw new Exception("обозначалки для персонажей кончились :((");
+	}
+	
 	private char findElement(int line, int column) throws Exception
 	{
 		Point currentPoint = new Point(column,line);
-		for (TheWoodman i:(super.woodmans).values()) {
+		for (TheWoodman i:woodmans.values()) {
 			if (i.GetLocation().equals(currentPoint)) {
-				return i.GetName().toUpperCase().charAt(0);
+				return getWoodmanName(i.GetName());
 			}
 		}
-		switch ((super.elements).get((super.wood)[line][column])) {
+		switch (getElement(line,column)) {
 		
 		case 'L':
 			//life
@@ -75,19 +101,19 @@ public abstract class PrintableTheWood extends TheWood {
 		}
 		StringBuffer element = new StringBuffer();
 		//up
-		if ((line - 1 >= 0)&&((super.elements).get((super.wood)[line - 1][column]) == '1')) {
+		if ((line - 1 >= 0)&&(getElement(line - 1,column) == '1')) {
 			element.append("U");
 		}
 		//left
-		if ((column - 1 >= 0)&&((super.elements).get((super.wood)[line][column - 1]) == '1')) {
+		if ((column - 1 >= 0)&&(getElement(line,column - 1) == '1')) {
 			element.append("L");
 		}
 		//down
-		if ((line + 1 < (super.wood).length)&&((super.elements).get((super.wood)[line + 1][column]) == '1')) {
+		if ((line + 1 < wood.length)&&(getElement(line + 1,column) == '1')) {
 			element.append("D");
 		}
 		//right
-		if ((column + 1 < (super.wood)[0].length)&&((super.elements).get((super.wood)[line][column + 1]) == '1')) {
+		if ((column + 1 < wood[0].length)&&(getElement(line,column + 1) == '1')) {
 			element.append("R");
 		}
 		if (element.length() > 0) {
@@ -97,11 +123,25 @@ public abstract class PrintableTheWood extends TheWood {
 			return graphList.get("A");
 		}
 	}
-	
-	public Action moveAndPrint(String name, Direction direction,OutputStream stream) throws Exception {
+	@Override
+	public Action move(String name, Direction direction) throws Exception {
 		Action currentAction;
 		currentAction = super.move(name, direction);
 		this.printWood(stream);
+		if (currentAction == Action.WoodmanNotFound) {
+			char tempName = woodmanNames.remove(name);
+			for (int i = 0; i < nameList.length; i++) {
+				if (nameList[i] == 'N') {
+					nameList[i] = tempName;
+				}
+			}
+		}
 		return currentAction;
+	}
+	
+	@Override
+	public void createWoodman(String name, Point startPoint) throws Exception {
+		super.createWoodman(name, startPoint);
+		printWood(stream);
 	}
 }

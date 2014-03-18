@@ -4,14 +4,43 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import wood01Interfaces.WoodLoader;
 
 public class TheWoodLoader implements WoodLoader {
+	
+	protected Map<Character,Character> elements;
+	
+	public TheWoodLoader() {
+		elements = new HashMap<Character,Character>();
+		elements.put('┌', '1');
+		elements.put('─', '1');
+		elements.put('┬', '1');
+		elements.put('┐', '1');
+		elements.put('│', '1');
+		elements.put('┼', '1');
+		elements.put('┤', '1');
+		elements.put('├', '1');
+		elements.put('└', '1');
+		elements.put('─', '1');
+		elements.put('┴', '1');
+		elements.put('┘', '1');
+		elements.put('♥', 'L');
+		elements.put(' ', '0');
+		elements.put('□', '1');
+		elements.put('ѻ', 'K');
+		elements.put('1', '1');
+		elements.put('0', '0');
+		elements.put('K', 'K');
+		elements.put('L', 'L');
+	}
+
 
 	@Override	
-	public RealWood Load(InputStream stream) throws Exception {
+	public TheWood Load(InputStream stream) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		String s;
 		LinkedList<String>woodArrList = new LinkedList<String>();
@@ -32,10 +61,13 @@ public class TheWoodLoader implements WoodLoader {
 			for (int i = 0; i < x; i++) {
 				s = woodArrList.removeFirst();
 				for (int j = 0; j < y; j++) {
-					wood[i][j] = s.charAt(j);
+					if (!elements.containsKey(s.charAt(j))) {
+						throw new IOException("неизвестная клетка..");
+					}
+					wood[i][j] = elements.get(s.charAt(j));
 				}
 			}
-			return new RealWood(wood);
+			return new TheWood(wood);
 		} catch (IOException e) {
 			System.out.println("с лесом беда...");
 		}

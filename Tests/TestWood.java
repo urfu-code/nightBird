@@ -8,7 +8,6 @@ import org.junit.Test;
 import wood01.Action;
 import wood01.Direction;
 import wood01.Point;
-import wood01.RealWood;
 import wood01.TheWood;
 
 public class TestWood {
@@ -22,7 +21,7 @@ public class TestWood {
 		wood[0] = new char[]{'1','0','1'};
 		wood[1] = new char[]{'L','0','1'};
 		wood[2] = new char[]{'0','K','1'};
-		testWood = (TheWood) new RealWood(wood);
+		testWood = (TheWood) new TheWood(wood);
 		testWood.createWoodman("kolya", new Point(1,1));
 	}
 	
@@ -75,20 +74,20 @@ public class TestWood {
 	
 	@Test(expected = Exception.class)
 	public void testException() throws Exception {
-		TheWood testWood = (TheWood) new RealWood(wood);
+		TheWood testWood = new TheWood(wood);
 		testWood.createWoodman("vasya", new Point(-1,-1));
 	}
 	
 	@Test(expected = Exception.class)
 	public void test2Exception() throws Exception {
-		TheWood test2Wood = (TheWood) new RealWood(wood);
+		TheWood test2Wood = new TheWood(wood);
 		test2Wood.createWoodman("vasya", new Point(1,0));
 		test2Wood.move("vasya", Direction.Up);
 	}
 	
 	@Test(expected = Exception.class)
 	public void test3Exception() throws Exception {
-		TheWood test3Wood = (TheWood) new RealWood(wood);
+		TheWood test3Wood = new TheWood(wood);
 		test3Wood.createWoodman("vasya", new Point(0,0));
 	}
 }

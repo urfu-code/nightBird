@@ -3,10 +3,10 @@ package Tests;
 import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 import org.junit.Test;
 
-import wood01.RealWood;
 import wood01.TheWood;
 import wood01.TheWoodLoader;
 
@@ -16,6 +16,10 @@ public class TestLoader {
 	public void testLoad() throws Exception {
 		String testString = "111\n101\n111\n";
 		String test2Wood =  "111101111";
+		String testPrintString = 
+				"┌─┐\n" +
+				"│ │\n" +
+				"└─┘\n";
 		ByteArrayInputStream testStream = new ByteArrayInputStream(testString.getBytes());
 		TheWoodLoader testLoader = new TheWoodLoader();
 		TheWood testWood = testLoader.Load(testStream);
@@ -27,7 +31,9 @@ public class TestLoader {
 				k++;
 			}		
 		}
-		TheWood myTestWood = (TheWood) new RealWood(wood);
+		TheWood myTestWood = new TheWood(wood);
+		assertEquals(true, testWood.equalsOfWoods(myTestWood));
+		testWood = testLoader.Load(new ByteArrayInputStream(testPrintString.getBytes()));
 		assertEquals(true, testWood.equalsOfWoods(myTestWood));
 	}
 	
@@ -40,5 +46,12 @@ public class TestLoader {
 		TheWood testWood_2 = testLoader.Load(testStream_2);
 	}
 	
-	
+	@Test(expected = IOException.class)
+	public void testExcInc() throws Exception {
+		String excWood = "111\n000\nI11\n111";
+		TheWoodLoader testLoader = new TheWoodLoader();
+		ByteArrayInputStream testStream_2 = new ByteArrayInputStream(excWood.getBytes());
+		@SuppressWarnings("unused")
+		TheWood testWood_2 = testLoader.Load(testStream_2);
+	}
 }
