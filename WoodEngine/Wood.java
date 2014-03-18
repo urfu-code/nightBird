@@ -9,20 +9,20 @@ public class Wood implements IWood {
 	 * 2 - trap
 	 * 3 - life
 	 */
-	protected char[][] m_woodMap;
+	protected final char[][] m_woodMap;
 	protected HashSet<Woodman> m_woodmansSet;
 	
 	public Wood (Character[] objs, int height, int width){
 		m_woodmansSet = new HashSet<Woodman>();
 		m_woodMap = new char[width][height];
-		for (int i = 0; i < height; i++) {
-			for (int j = 0; j < width; j++) {
-				m_woodMap[j][i] = objs[i*width + j];
+		for (int j = 0; j < height; j++) {
+			for (int i = 0; i < width; i++) {
+				m_woodMap[i][j] = objs[j*width + i];
 			}
 		}
 	}
 	
-	private void eraseWoodman(String name){
+	protected void eraseWoodman(String name){
 		for (Woodman curWM : m_woodmansSet) {
 			if (curWM.GetName() == name) {
 				m_woodmansSet.remove(curWM);
@@ -40,7 +40,7 @@ public class Wood implements IWood {
 	}
 
 	@Override
-	public Action move(String name, Direction direction) {
+	public Action move(String name, Direction direction) throws IOException {
 		for (Woodman curWM : m_woodmansSet) {
 			if (curWM.GetName() == name) {
 				Point curLoc = curWM.GetLocation();

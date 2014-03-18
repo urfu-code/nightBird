@@ -20,6 +20,7 @@ public interface IWood {
 	 * @param name имя лесного жителя
 	 * @param direction направление перемещения
 	 * @return результат перемещения
+	 * @throws IOException 
 	 */
-	Action move(String name, Direction direction);
+	Action move(String name, Direction direction) throws IOException;
 }
