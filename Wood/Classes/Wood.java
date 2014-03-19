@@ -21,12 +21,25 @@ public class Wood implements WoodInterface {
 	}
 	@Override
 	public void createWoodman(String name, Point start) throws UnexceptableNameException {
+		if (m_wood[start.getX()][start.getY()] == '1')
+			throw new RuntimeException("Невозможно создать игрока в клетке " + start.toString() + ". в этой клетке стена");
 //		Проверка на уникальность имени
 		if (m_woodmans.containsKey(name))
 			throw new UnexceptableNameException(name);		
 		m_woodmans.put(name, new Woodman(start, name));
 	}
 
+	protected Point getLocation(String name) {
+		if (!m_woodmans.containsKey(name))
+			throw new RuntimeException("Woodman not found");
+		return m_woodmans.get(name).GetLocation();
+	}
+	protected int getLifeCount(String name) {
+		if (!m_woodmans.containsKey(name))
+			throw new RuntimeException("Нет такого игрока");
+		return m_woodmans.get(name).GetLifeCount();
+		
+	}
 	@Override
 	public Action move(String name, Direction direction) {
 		if (!m_woodmans.containsKey(name))
@@ -78,10 +91,23 @@ public class Wood implements WoodInterface {
 			case '1':
 				//на случай если мы стоит на капкане или жизни опять запускаем функцию, что бы она прибавила или уменьшила
 				//количество жизней
-				if( move(name, Direction.None) == Action.WoodmanNotFound )
-					return Action.WoodmanNotFound;
-				else
-					return Action.Fail;
+				location = carecter.GetLocation();
+				switch (m_wood[location.getX()][location.getY()]) {
+				case 'K':
+					if (carecter.Kill())
+						return Action.Fail;
+					else
+					{
+//						умер((
+						m_woodmans.remove(name);
+						return Action.WoodmanNotFound;
+					}
+				case 'L':
+					carecter.AddLife();
+				}
+				return Action.Fail;
+				
+				
 			case 'K':
 				carecter.SetLocation(location);
 				if (carecter.Kill())
