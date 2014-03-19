@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -38,9 +39,20 @@ public class TheWoodLoader implements WoodLoader {
 		elements.put('L', 'L');
 	}
 
+	
+	@Override
+	public TheWood Load(InputStream inStream) throws Exception {
+		char[][] wood = makeWood(inStream);
+		return new TheWood(wood);
+	}
+	
+	@Override
+	public PrintableTheWood Load(InputStream inStream, OutputStream outStream) throws Exception {
+		char[][] wood = makeWood(inStream);
+		return new PrintableTheWood(wood,outStream);
+	}
 
-	@Override	
-	public TheWood Load(InputStream stream) throws Exception {
+	public char[][] makeWood(InputStream stream) throws Exception {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
 		String s;
 		LinkedList<String>woodArrList = new LinkedList<String>();
@@ -67,7 +79,7 @@ public class TheWoodLoader implements WoodLoader {
 					wood[i][j] = elements.get(s.charAt(j));
 				}
 			}
-			return new TheWood(wood);
+			return  wood;
 		} catch (IOException e) {
 			System.out.println("с лесом беда...");
 		}

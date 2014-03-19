@@ -27,7 +27,7 @@ public class TestPrintableTheWood {
 		testString = "111111\n1001L1\n101111\n100101\n101001\n1000K1\n111111\n";
 		testOutput = new ByteArrayOutputStream();
 		testStream = new ByteArrayInputStream(testString.getBytes());
-		testWood =  loader.Load(testStream).toPrintWood(testOutput);
+		testWood =  loader.Load(testStream,testOutput);
 	}
 
 	@Test

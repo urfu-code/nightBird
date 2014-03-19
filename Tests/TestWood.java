@@ -21,7 +21,7 @@ public class TestWood {
 		wood[0] = new char[]{'1','0','1'};
 		wood[1] = new char[]{'L','0','1'};
 		wood[2] = new char[]{'0','K','1'};
-		testWood = (TheWood) new TheWood(wood);
+		testWood =  new TheWood(wood);
 		testWood.createWoodman("kolya", new Point(1,1));
 	}
 	

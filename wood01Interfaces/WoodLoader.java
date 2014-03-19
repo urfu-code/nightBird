@@ -1,6 +1,10 @@
 package wood01Interfaces;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+
+import wood01.PrintableTheWood;
+import wood01.TheWood;
 
 /**
  * Создатель леса
@@ -13,5 +17,7 @@ public interface WoodLoader {
 	 * @throws IOException 
 	 * @throws Exception 
 	 */
-	Wood Load(InputStream stream) throws IOException, Exception;
+	TheWood Load(InputStream stream) throws IOException, Exception;
+	PrintableTheWood Load(InputStream inStream, OutputStream outStream) throws Exception;
+	
 }
