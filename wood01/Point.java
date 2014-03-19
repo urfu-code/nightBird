@@ -1,3 +1,4 @@
+package wood01;
 public class Point {
 	private final int x;
 	private final int y;
@@ -27,7 +28,14 @@ public class Point {
 		return new Point(x - 1, y);
 	}
 
-	public Point MoveRigth() {
+	public Point MoveRight() {
 		return new Point(x + 1, y);
+	}
+	
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Point)) {
+			return false;
+		}
+		return (this.getX() == ((Point) obj).getX())&&(this.getY() == ((Point) obj).getY());		
 	}
 }
