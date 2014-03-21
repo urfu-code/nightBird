@@ -16,20 +16,21 @@ public class PrintableWood extends MyWood {
 	public PrintableWood(char[][] wood,OutputStream stream) throws UnsupportedEncodingException {
 		super(wood);
 		ostream = new OutputStreamWriter(stream);
-	for(int i = 0; i < wl; i++) { 
-		StringBuilder s = new StringBuilder(); 	
+	for(int i = 0; i < wl; i++) { 	
+		StringBuilder s = new StringBuilder(); 
 		for(int j = 0; j < ww; j++) { 	                    
-				char woodChar = m_wood[i][j];               
+				char woodChar = wood[i][j];	               
 				if (woodChar == '0') 
-					s.append('○');
+					s.append('○');				
 				if (woodChar == '1') 
-					s.append('✿');
+					s.append('✿');				
 				if (woodChar == 'K')
-					s.append('✖');
+					s.append('✖');							
 				if (woodChar == 'L')
-					s.append('♥');			
-			}	printList.add(s);
-		}
+					s.append('♥');	}
+				printList.add(s);
+			}	
+		
 		printList.add(new StringBuilder());    
 		printList.add(new StringBuilder('♥' + " - life")); 
 		printList.add(new StringBuilder('✖' + " - death"));   
@@ -38,8 +39,6 @@ public class PrintableWood extends MyWood {
 	@Override
 	public void createWoodman(String name, Point start) throws CodeException, IOException{
 		super.createWoodman(name, start);
-		if (m_wood[start.getY()][start.getX()]=='1')
-			throw new CodeException("Error!You can't stand on the wall!");
 	}
 
 	@Override
@@ -52,7 +51,7 @@ public class PrintableWood extends MyWood {
 	public void PrintWood() throws IOException {
 		try {
 			for (MyWoodman newWoodman : m_woodmanList.values()) {         
-				printList.get(newWoodman.GetLocation().getY()).setCharAt(newWoodman.GetLocation().getX(), newWoodman.GetName().charAt(0));
+				printList.get(newWoodman.GetLocation().getX()).setCharAt(newWoodman.GetLocation().getY(), newWoodman.GetName().charAt(0));
 				printList.add(new StringBuilder(newWoodman.GetName().charAt(0) + " - " + newWoodman.GetName() + '(' + newWoodman.GetLifeCount() + " lives)"));
 			}		
 			StringBuilder PrintOut = new StringBuilder(); 
@@ -60,7 +59,7 @@ public class PrintableWood extends MyWood {
 				PrintOut.append(str);                      
 				PrintOut.append(System.lineSeparator());   
 			}	
-			System.out.println(PrintOut.toString());
+			System.out.print(PrintOut.toString());
 			ostream.write(PrintOut.toString());  		
 		}
 		finally {
