@@ -19,7 +19,7 @@ public class PrintableWood extends MyWood {
 	for(int i = 0; i < wl; i++) { 
 		StringBuilder s = new StringBuilder(); 	
 		for(int j = 0; j < ww; j++) { 	                    
-				char woodChar = wood[i][j];                
+				char woodChar = m_wood[i][j];               
 				if (woodChar == '0') 
 					s.append('○');
 				if (woodChar == '1') 
@@ -27,8 +27,7 @@ public class PrintableWood extends MyWood {
 				if (woodChar == 'K')
 					s.append('✖');
 				if (woodChar == 'L')
-					s.append('♥');
-			
+					s.append('♥');			
 			}	printList.add(s);
 		}
 		printList.add(new StringBuilder());    
@@ -39,7 +38,8 @@ public class PrintableWood extends MyWood {
 	@Override
 	public void createWoodman(String name, Point start) throws CodeException, IOException{
 		super.createWoodman(name, start);
-		PrintWood();  
+		if (m_wood[start.getY()][start.getX()]=='1')
+			throw new CodeException("Error!You can't stand on the wall!");
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class PrintableWood extends MyWood {
 		PrintWood();
 		return result;
 	}
-
+	
 	public void PrintWood() throws IOException {
 		try {
 			for (MyWoodman newWoodman : m_woodmanList.values()) {         
@@ -60,8 +60,8 @@ public class PrintableWood extends MyWood {
 				PrintOut.append(str);                      
 				PrintOut.append(System.lineSeparator());   
 			}	
-			ostream.write(PrintOut.toString());  
 			System.out.println(PrintOut.toString());
+			ostream.write(PrintOut.toString());  		
 		}
 		finally {
 			ostream.close();
