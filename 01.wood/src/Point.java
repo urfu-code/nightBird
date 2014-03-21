@@ -30,4 +30,11 @@ public class Point {
 	public Point MoveRigth() {
 		return new Point(x + 1, y);
 	}
+	
+	public boolean equals(Point one){
+		if((one.getX() == this.getX()) && (one.getY() == this.getY())){
+			return true;
+		}
+		return false;
+	}
 }
