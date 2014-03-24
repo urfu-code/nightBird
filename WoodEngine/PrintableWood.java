@@ -12,12 +12,14 @@ public class PrintableWood extends Wood {
 	private final int m_width;
 	private final char[][] m_gWoodMap;
 	private static final HashMap<Byte, Character> chM = new HashMap<Byte, Character>();
+	private OutputStream s;
 	private OutputStreamWriter os;
 	private HashMap<String, Character> m_wmSym;
-
-    public PrintableWood(Character[] wood, int h, int w, OutputStream stream) throws UnsupportedEncodingException {
-		super(wood, h, w);
-		os = new OutputStreamWriter(stream, System.getProperty("file.encoding"));
+    
+    public PrintableWood(Character[] wood, int h, int w) throws UnsupportedEncodingException {
+    	super(wood, h, w);
+		s = System.out;
+		os = new OutputStreamWriter(s, System.getProperty("file.encoding"));
 		m_wmSym = new HashMap<String, Character>();
 		chM.put((byte) 0x00, '╬');
 		chM.put((byte) 0x03, '╗');
@@ -39,7 +41,7 @@ public class PrintableWood extends Wood {
 				m_gWoodMap[i][j] = toGraphic(i, j);
 			}
 		}
-	}
+    }
     
     private char toGraphic(int i, int j) {
     	if(super.m_woodMap[i][j] == '0') return ' ';
@@ -72,7 +74,19 @@ public class PrintableWood extends Wood {
     	else mask ^= 0x01;
 		return chM.get(mask);
 	}
-
+    
+    /**
+     * Default stream = System.out
+     * @param stream - заменяющий OutputStream
+     * @throws IOException
+     */
+    public void chOStream(OutputStream stream) throws IOException{
+    	os.close();
+    	s.close();
+    	s = stream;
+    	os = new OutputStreamWriter(s, System.getProperty("file.encoding"));
+    }
+    
     @Override
 	protected void eraseWoodman(String name){
     	super.eraseWoodman(name);
@@ -89,22 +103,31 @@ public class PrintableWood extends Wood {
 	private void printWood() throws IOException {
 		try{
 			for (int j = 0; j < m_height; j++) {
-				for (int i = 0; i < m_width; i++) {
+				point: for (int i = 0; i < m_width; i++) {
 					for (Woodman wm : super.m_woodmansSet) {
 						if(wm.GetLocation().equals(new Point(i, j))){
 							os.write(m_wmSym.get(wm.GetName()));
-						}
-						else{
-							os.write(m_gWoodMap[i][j]);
+							continue point;
 						}
 					}
+					os.write(m_gWoodMap[i][j]);
+					continue;
 				}
-				os.write(System.lineSeparator().toCharArray());
+				os.write(System.lineSeparator());
 			}
+			for (String wmN : m_wmSym.keySet()) {
+				os.write(m_wmSym.get(wmN) + " - " + wmN);
+				os.write(System.lineSeparator());
+			}
+			os.write("♥ - life");
+			os.write(System.lineSeparator());
+			os.write("□ - IT'S A TRAP");
+			os.write(System.lineSeparator());
 			os.flush();
 		}
-		catch(Exception e){
+		catch(IOException e){
 			os.close();
+			s.close();
 			e.printStackTrace();
 		}
 	}
