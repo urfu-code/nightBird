@@ -95,9 +95,17 @@ public class PrintableWood extends Wood {
     
     @Override
     public void createWoodman(String name, Point start) throws IOException{
-    	super.createWoodman(name, start);
-    	m_wmSym.put(name, name.charAt(0)); // тут ещё доделать уникальность
-    	printWood();
+    	pos:for (int j = 0; j < name.length(); j++) {
+        	for (Character ch : m_wmSym.values()) {
+    			if(name.charAt(j) == ch){
+    				continue pos;
+    			}
+    		}
+        	m_wmSym.put(name, name.charAt(j));
+        	super.createWoodman(name, start);
+        	printWood();
+        	return;
+		}
     }
 	
 	private void printWood() throws IOException {
