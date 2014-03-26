@@ -8,9 +8,10 @@ public class PrintableWood extends MyWood {
 
 	private char[][] m_wood;
 	private LinkedList<StringBuilder> printList;
-	private OutputStream out_stream;
 	private Map<String,Character>woodmanNames;
 	private Map<Character, Boolean> freeImage;
+	private OutputStream out_stream;
+	private OutputStreamWriter writer;
 	private char[] imageList = {'✢', '✤', '✦', '✧', '✪', '✫', '✰', '✱', '✲', '✹', '✺', '✻', '✾', '✿', '❀', '❁', '❂', '❃', '❄', '❅', '❆', '❇', '❈', '❉'};
 	
 	public PrintableWood(char[][] wood, OutputStream stream) {
@@ -59,7 +60,8 @@ public class PrintableWood extends MyWood {
 	}
 
 	public void printWood() throws Exception {
-		OutputStreamWriter writer = new OutputStreamWriter(out_stream);
+		
+		writer = new OutputStreamWriter(out_stream);
 		
 		for (int i = 0; i < m_wood[0].length; i++) {
 			StringBuilder str_b = new StringBuilder();
@@ -97,8 +99,8 @@ public class PrintableWood extends MyWood {
 				print.append(str);                      
 				print.append(System.lineSeparator());   
 			}	
-		writer.write(print.toString()); 
-		
+		writer.write(print.toString());
+		writer.close();
 		printList.clear();	
 }
 	

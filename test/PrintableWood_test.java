@@ -25,7 +25,7 @@ public class PrintableWood_test {
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 		PrintableWood w = new PrintableWood(wood_map, output);
 		w.createWoodman("Armstrong", new Point (1,1));
-		String out_wood = "▓▓▓▓\r\n▓✢░▓\r\n▓♥✡▓\r\n▓▓▓▓\r\n\r\n♥ - дополнительная жизнь\r\n✡ - капкан\r\n✢ - Armstrong (Количестро жизней:3)\r\n";
+		String out_wood = "▓▓▓▓\r\n▓✢♥▓\r\n▓░✡▓\r\n▓▓▓▓\r\n\r\n♥ - дополнительная жизнь\r\n✡ - капкан\r\n✢ - Armstrong (Количестро жизней:3)\r\n";
 		assertEquals(out_wood, output.toString());
 	}
 	
@@ -47,7 +47,8 @@ public class PrintableWood_test {
 		PrintableWood w = new PrintableWood(wood_map, output);
 		w.createWoodman("Gagarin", new Point (1,1));
 		w.move("Gagarin", Direction.Right);
-		String out_wood = "▓▓▓▓\r\n▓░✢▓\r\n▓♥✡▓\r\n▓▓▓▓\r\n\r\n♥ - дополнительная жизнь\r\n✡ - капкан\r\n✢ - Gagarin (Количестро жизней:4)\r\n";
+		//Выведет сначала createWoodman, а затем move
+		String out_wood = "▓▓▓▓\r\n▓✢♥▓\r\n▓░✡▓\r\n▓▓▓▓\r\n\r\n♥ - дополнительная жизнь\r\n✡ - капкан\r\n✢ - Gagarin (Количестро жизней:3)\r\n▓▓▓▓\r\n▓░✢▓\r\n▓░✡▓\r\n▓▓▓▓\r\n\r\n♥ - дополнительная жизнь\r\n✡ - капкан\r\n✢ - Gagarin (Количестро жизней:4)\r\n";
 		assertEquals(out_wood, output.toString());
 	}
 }
