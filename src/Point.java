@@ -30,4 +30,18 @@ public class Point {
 	public Point MoveRigth() {
 		return new Point(x + 1, y);
 	}
+	
+	@Override
+	public boolean equals (Object point) {
+		if ((point==null) || (point.getClass()!=Point.class)) {
+			return false;
+		}
+		Point p1 = (Point)point;
+		if ((this.getX() == p1.getX()) && (this.getY() == p1.getY())){
+						return true;
+		}
+			return false;
+	}
+	
 }
+
