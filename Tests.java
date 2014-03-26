@@ -34,7 +34,7 @@ public class PrintableWoodTest {
 		PrintableWoodLoader W=new PrintableWoodLoader();
 		PrintableWood wood=W.PrintableWoodLoad(instream,outstream);
 		wood.createWoodman("Chris", new Point(6, 7));
-		String s="✿✿✿✿✿✿✿✿✿\r\n" +
+	          	String s="✿✿✿✿✿✿✿✿✿\r\n" +
 				 "✿○○○○○✿✖✿\r\n" +
 				 "✿✿✿✿✿○✿○✿\r\n" +
 				 "✿○○○✿○✿○✿\r\n" +
@@ -58,7 +58,7 @@ public class PrintableWoodTest {
 		PrintableWoodLoader W=new PrintableWoodLoader();
 		PrintableWood wood=W.PrintableWoodLoad(instream,outstream);
 		wood.createWoodman("Dorian", new Point(2, 7));
-		String s1="✿✿✿✿✿✿✿✿✿\r\n" +
+		       String s1="✿✿✿✿✿✿✿✿✿\r\n" +
 				 "✿○○○○○✿✖✿\r\n" +
 				 "✿✿✿✿✿○✿♦✿\r\n" +
 				 "✿○○○✿○✿○✿\r\n" +
@@ -71,7 +71,7 @@ public class PrintableWoodTest {
 				 "✖ - death\r\n" +
 				 "♦ - Dorian(3 lives)\r\n";			
 		wood.move("Dorian", Direction.Up);	
-		String s="✿✿✿✿✿✿✿✿✿\r\n" +
+		        String s="✿✿✿✿✿✿✿✿✿\r\n" +
 				 "✿○○○○○✿♦✿\r\n" +
 				 "✿✿✿✿✿○✿○✿\r\n" +
 				 "✿○○○✿○✿○✿\r\n" +
