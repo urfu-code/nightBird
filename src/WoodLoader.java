@@ -9,5 +9,5 @@ public interface WoodLoader {
 	 * @param stream поток с информацией о лесе.
 	 * @return Лес
 	 */
-	Wood Load(InputStream stream);
+	MyWood Load(InputStream stream);
 }

@@ -3,6 +3,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.junit.Test;
@@ -11,7 +12,7 @@ import org.junit.Test;
 public class testMyWoodLoader {
 
 	@Test
-	public void testLoad() {
+	public void testLoad() throws IOException {
 		try {
 			InputStream stream = new FileInputStream (new File ("labyrinth.txt"));
 			MyWoodLoader loader = new MyWoodLoader();

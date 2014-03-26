@@ -19,7 +19,7 @@ public class MyWoodman implements Woodman {
 	}
 
 	public boolean Kill() {
-		if (m_lifeCount - 1 <= -1) {
+		if (m_lifeCount  < 0) {
 			return false;
 		} else {
 			m_lifeCount -= 1;
