@@ -1,11 +1,9 @@
 package defpac;
 
 import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,11 +15,6 @@ public class MyPrintableWood extends MyWood {
 		super(m_wood);
 		this.output = output;
 	}
-
-	/*
-	 * private void printWood() { ByteArrayOutputStream stream = new...();
-	 * stream.write(123); byte[] array = stream.toByteArray(); }
-	 */
 
 	public void printWood() throws IOException {
 		PrintWriter out = new PrintWriter(
@@ -103,7 +96,6 @@ public class MyPrintableWood extends MyWood {
 							if (m_wood[j-1][i] != 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] != 1 && m_wood[j][i+1] == 1) symbol = "╔";
 							if (m_wood[j-1][i] != 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] != 1) symbol = "╝";
 						}
-						//System.out.print(symbol);
 						//out.write(symbol.getBytes());
 						System.out.print(symbol);
 						//out.write(symbol.getBytes());
