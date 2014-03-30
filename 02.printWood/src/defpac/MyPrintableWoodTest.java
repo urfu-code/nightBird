@@ -2,7 +2,6 @@ package defpac;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import junit.framework.TestCase;
 
@@ -34,8 +33,6 @@ public class MyPrintableWoodTest extends TestCase {
 
 	public void testPrintWood() throws IOException {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		//ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		//stream.write(("╔══╗\n║A†║\n║ ♥║\n╚══╝\n\n♥ - life\n† - death\nA - aaa , lifes: 3").getBytes());
 		char[][] forest = {{'1','1','1','1'},{'1','0','K','1'},{'1','0','L','1'},{'1','1','1','1'}};
 		MyPrintableWood wood = new MyPrintableWood (forest,out);
 		wood.createWoodman("aaa", new Point(1,1));
@@ -46,6 +43,5 @@ public class MyPrintableWoodTest extends TestCase {
 			bytes[Idx] = string.charAt(Idx);
 		for (int Idx = 0; Idx < string.length(); Idx++)
 			assert (s_w[Idx] == (byte) bytes[Idx]);
-		//assertEquals(out,stream);
 	}
 }
