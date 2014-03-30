@@ -66,6 +66,7 @@ public class MyWood implements Wood {
 				if (currentW.Kill()) {
 					currentW.SetLocation(newLocation);
 					current = Action.Dead;
+					break;
 				}
 				m_woodmanList.remove(name);
 				current = Action.WoodmanNotFound;

@@ -1,17 +1,21 @@
 package defpac;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MyPrintableWood extends MyWood {
-	private OutputStream out;
+	private OutputStream output;
 
-	public MyPrintableWood(char[][] m_wood, OutputStream out) {
+	public MyPrintableWood(char[][] m_wood, OutputStream output) {
 		super(m_wood);
-		this.out = out;// сам поток
-		// this.printWood();
+		this.output = output;
 	}
 
 	/*
@@ -19,9 +23,11 @@ public class MyPrintableWood extends MyWood {
 	 * stream.write(123); byte[] array = stream.toByteArray(); }
 	 */
 
-	public void printWood() {
-		boolean life = false;
-		boolean death = false;
+	public void printWood() throws IOException {
+		PrintWriter out = new PrintWriter(
+				new OutputStreamWriter(
+				new BufferedOutputStream(output)));
+		try {
 		int IdxSymbols = 1;
 		Map<String, String> code = new HashMap<String, String>();
 		String symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -33,43 +39,90 @@ public class MyPrintableWood extends MyWood {
 			for (int i = 0; i < m_wood[0].length; i++) {
 				boolean player = false;
 				for (MyWoodman man : m_woodmanList.values()) {
-					Point point = new Point(j, i);
+					Point point = new Point(i, j);
 					if (man.GetLocation().equals(point)) {
 						System.out.print(code.get(man.GetName()));
+						//out.write((code.get(man.GetName())).getBytes());
+						out.print((code.get(man.GetName())).getBytes());
 						player = true;
 					}
 				}
 				if (player == false) {
 					switch (m_wood[j][i]) {
 					case '1':
-						if (i == 0 && j == 0)
-							System.out.print("┌");
-						if (i == m_wood[0].length - 1 && j == 0)
-							System.out.print("┐");
-						if (i == 0 && j == m_wood.length - 1)
-							System.out.print("└");
-						if (i == m_wood[0].length - 1 && j == m_wood.length - 1)
-							System.out.print("┘");
-						if (i > 0 && i < m_wood[0].length - 1
-								&& (j == 0 || j == m_wood.length - 1))
-							System.out.print("─");
-						if (j > 0 && j < m_wood.length - 1
-								&& (i == 0 || i == m_wood[0].length - 1))
-							System.out.print("│");
-						// if (i > 0 && j > 0 && i < forest[0].length-1 && j <
-						// forest.length-1) System.out.print("█");
-						// если важно - могу запилить отдельно
+						String symbol = "*";
+						if (i == 0 && j == 0) symbol = "╔";
+						if (i == m_wood[0].length - 1 && j == 0) symbol = "╗";
+						if (i == 0 && j == m_wood.length - 1) symbol = "╚";
+						if (i == m_wood[0].length - 1 && j == m_wood.length - 1) symbol = "╝";
+						
+						if (i == 0 && j != m_wood.length - 1 && j != 0) {
+							symbol = "║";
+							if (m_wood[j][i+1] == 1 && m_wood[j-1][i] == 1 && m_wood[j+1][i] == 1) symbol = "╠";
+							if (m_wood[j][i+1] == 1 && m_wood[j-1][i] == 1 && m_wood[j+1][i] != 1) symbol = "╚";
+							if (m_wood[j][i+1] == 1 && m_wood[j-1][i] != 1 && m_wood[j+1][i] == 1) symbol = "╔";
+							//if (m_wood[j][i+1] != 1 && m_wood[j-1][i] == 1 && m_wood[j+1][i] == 1) symbol = "║";
+							if (m_wood[j][i+1] == 1 && m_wood[j-1][i] != 1 && m_wood[j+1][i] != 1) symbol = "═";
+						}
+						if (j == 0 && i != m_wood[0].length - 1 && i != 0) {
+							symbol = "═";
+							if (m_wood[j+1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] == 1) symbol = "╦";
+							if (m_wood[j+1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] != 1) symbol = "╗";
+							if (m_wood[j+1][i] == 1 && m_wood[j][i-1] != 1 && m_wood[j][i+1] == 1) symbol = "╔";
+							if (m_wood[j][i+1] != 1 && m_wood[j][i-1] != 1 && m_wood[j+1][i] == 1) symbol = "║";
+							//if (m_wood[j][i+1] == 1 && m_wood[j][i-1] == 1 && m_wood[j+1][i] != 1) symbol = "═";
+						}
+						if (j == m_wood.length - 1 && i != 0 && i != m_wood[0].length - 1) {
+							symbol = "═";
+							if (m_wood[j-1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] == 1) symbol = "╩";
+							if (m_wood[j-1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] != 1) symbol = "╝";
+							if (m_wood[j-1][i] == 1 && m_wood[j][i-1] != 1 && m_wood[j][i+1] == 1) symbol = "╚";
+							if (m_wood[j][i+1] != 1 && m_wood[j][i-1] != 1 && m_wood[j-1][i] == 1) symbol = "║";
+							//if (m_wood[j][i+1] == 1 && m_wood[j][i-1] == 1 && m_wood[j-1][i] != 1) symbol = "═";
+						}
+						if (i == m_wood[0].length - 1 && j != 0 && j != m_wood.length - 1) {
+							symbol = "║";
+							if (m_wood[j-1][i] == 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] == 1) symbol = "╣";
+							if (m_wood[j-1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j+1][i] != 1) symbol = "╝";
+							if (m_wood[j-1][i] != 1 && m_wood[j][i-1] == 1 && m_wood[j+1][i] == 1) symbol = "╗";
+							//if (m_wood[j-1][i] == 1 && m_wood[j][i-1] != 1 && m_wood[j+1][i] == 1) symbol = "║";
+							if (m_wood[j-1][i] != 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] == 1) symbol = "═";
+						}
+						
+						if (j != 0 && j != m_wood.length - 1 && i != 0 && i != m_wood[0].length - 1) {
+							if ((m_wood[j-1][i] == 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] == 1)||
+							(m_wood[j-1][i] != 1 && m_wood[j+1][i] != 1 && m_wood[j][i-1] != 1 && m_wood[j][i+1] != 1)) symbol = "╬";
+							if (m_wood[j-1][i] != 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] == 1) symbol = "╦";
+							if (m_wood[j-1][i] == 1 && m_wood[j+1][i] != 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] == 1) symbol = "╩";
+							if (m_wood[j-1][i] == 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] != 1 && m_wood[j][i+1] == 1) symbol = "╠";
+							if (m_wood[j-1][i] == 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] != 1) symbol = "╣";							
+							if (m_wood[j-1][i] != 1 && m_wood[j+1][i] != 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] == 1) symbol = "═";
+							if (m_wood[j-1][i] == 1 && m_wood[j+1][i] != 1 && m_wood[j][i-1] != 1 && m_wood[j][i+1] == 1) symbol = "╚";
+							if (m_wood[j-1][i] == 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] != 1 && m_wood[j][i+1] != 1) symbol = "║";
+							if (m_wood[j-1][i] != 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] != 1) symbol = "╗";
+							if (m_wood[j-1][i] != 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] != 1 && m_wood[j][i+1] == 1) symbol = "╔";
+							if (m_wood[j-1][i] != 1 && m_wood[j+1][i] == 1 && m_wood[j][i-1] == 1 && m_wood[j][i+1] != 1) symbol = "╝";
+						}
+						//System.out.print(symbol);
+						//out.write(symbol.getBytes());
+						System.out.print(symbol);
+						//out.write(symbol.getBytes());
+						out.print(symbol.getBytes());
 						break;
 					case '0':
 						System.out.print(" ");
+						//out.write((" ").getBytes());
+						out.print((" ").getBytes());
 						break;
 					case 'K':
-						death = true;
 						System.out.print("†");
+						//out.write(("†").getBytes());
+						out.print(("†").getBytes());
 						break;
 					case 'L':
-						life = true;
 						System.out.print("♥");
+						//out.write(("♥").getBytes());
+						out.print(("♥").getBytes());
 						break;
 					default:
 						break;
@@ -77,15 +130,23 @@ public class MyPrintableWood extends MyWood {
 				}
 			}
 			System.out.print("\n");
+			//out.write(("\n").getBytes());
+			out.print(("\n").getBytes());
 		}
-		if (life)
-			System.out.print("\n♥ - life");
-		if (death)
-			System.out.print("\n† - death\n");
+		System.out.print("\n♥ - life\n† - death\n");
+		//out.write(("\n♥ - life\n† - death\n").getBytes());
+		out.print(("\n♥ - life\n† - death\n").getBytes());
 		// предполагаем, что игроков не более 26 :-)
 		for (MyWoodman man : m_woodmanList.values()) {
 			System.out.print(code.get(man.GetName()) + " - " + man.GetName()
 					+ " , lifes: " + man.GetLifeCount() + "\n");
+			//out.write((code.get(man.GetName()) + " - " + man.GetName()
+			out.print((code.get(man.GetName()) + " - " + man.GetName()
+					//	+ " , lifes: " + man.GetLifeCount() + "\n").getBytes());
+					+ " , lifes: " + man.GetLifeCount() + "\n").getBytes());
+		}
+		} finally {
+			out.close();
 		}
 	}
 
