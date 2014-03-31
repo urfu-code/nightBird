@@ -1,7 +1,11 @@
+package WoodEngine;
+
+
+
 /**
  * Лесной житель
  */
-public interface Woodman {
+public interface IWoodman {
 	/**
 	 * Количество жизней персонажа.
 	 */

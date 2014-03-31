@@ -1,12 +1,18 @@
-﻿
-public interface Wood {
+﻿package WoodEngine;
+
+import java.io.IOException;
+
+
+
+public interface IWood {
 	/**
 	 * Создает нового лесного жителя.
 	 * 
 	 * @param name имя лесного жителя
 	 * @param start место появления
+	 * @throws IOException 
 	 */
-	void createWoodman(String name, Point start);
+	void createWoodman(String name, Point start) throws IOException;
 	
 	/**
 	 * Перемещает лесного жителя.
@@ -14,6 +20,7 @@ public interface Wood {
 	 * @param name имя лесного жителя
 	 * @param direction направление перемещения
 	 * @return результат перемещения
+	 * @throws IOException 
 	 */
-	Action move(String name, Direction direction);
+	Action move(String name, Direction direction) throws IOException;
 }
