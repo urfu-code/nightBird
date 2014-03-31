@@ -2,17 +2,19 @@ package WoodEngine;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.Vector;
 
 
 public class WoodLoader implements IWoodLoader {
 	
-	@Override
-	public IWood Load(InputStream stream) throws IOException {
+	private int h = 0;
+	private int w = 0;
+	private Character[] a;
+	
+	private void Read(InputStream stream) throws IOException{
 		InputStreamReader rdr = new InputStreamReader(stream, "utf-8");
 		Vector<Character> vec = new Vector<Character>();
-		int h = 0;
-		int w = 0;
 		int v;
 		try{
 			while((v = rdr.read()) >= 0){
@@ -45,29 +47,40 @@ public class WoodLoader implements IWoodLoader {
 				vec.removeElement('\n');
 			}
 		}
-		Character[] a = new Character[vec.size()];
+		a = new Character[vec.size()];
 		vec.toArray(a);
 		for (int i = 0; i < a.length; i++) {
-			if((a[i] == '═') || (a[i] == '║') || (a[i] == '╔') || (a[i] == '╗') || (a[i] == '╚') || 
+			if((a[i] == '═') || (a[i] == '║') || (a[i] == '╔') || (a[i] == '╗') || (a[i] == '╚') || (a[i] == '1') || 
 					(a[i] == '╝') || (a[i] == '╠') || (a[i] == '╣') || (a[i] == '╦') || (a[i] == '╩') || (a[i] == '╬')){
 				a[i] = '1';
 				continue;
 			}
-			if(a[i] == '♥'){
+			if((a[i] == '♥') || (a[i] == '3')){
 				a[i] = '3';
 				continue;
 			}
-			if(a[i] == ' '){
+			if((a[i] == ' ') || (a[i] == '0')){
 				a[i] = '0';
 				continue;
 			}
-			if(a[i] == '□'){
+			if((a[i] == '□') || (a[i] == '2')){
 				a[i] = '2';
 				continue;
 			}
 			throw new IOException("Unsupported symbol");
 		}
+	}
+	
+	@Override
+	public IWood LoadWood(InputStream stream) throws IOException {
+		Read(stream);
 		return new Wood(a, h, w);
+	}
+	
+	@Override
+	public IWood LoadPrntbleWood(InputStream stream, OutputStream ostream) throws IOException {
+		Read(stream);
+		return new PrintableWood(a, h, w, ostream);
 	}
 
 }

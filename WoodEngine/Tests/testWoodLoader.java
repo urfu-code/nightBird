@@ -22,7 +22,7 @@ public class testWoodLoader {
 		WoodLoader wl = new WoodLoader();
 		Wood w;
 		try{
-			w = (Wood)wl.Load(in);
+			w = (Wood)wl.LoadWood(in);
 		}
 		finally{
 			in.close();

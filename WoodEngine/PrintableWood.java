@@ -16,9 +16,9 @@ public class PrintableWood extends Wood {
 	private OutputStreamWriter os;
 	private HashMap<String, Character> m_wmSym;
     
-    public PrintableWood(Character[] wood, int h, int w) throws UnsupportedEncodingException {
+    public PrintableWood(Character[] wood, int h, int w, OutputStream ostream) throws UnsupportedEncodingException {
     	super(wood, h, w);
-		s = System.out;
+		s = ostream;
 		os = new OutputStreamWriter(s, System.getProperty("file.encoding"));
 		m_wmSym = new HashMap<String, Character>();
 		chM.put((byte) 0x00, '╬');
@@ -74,19 +74,7 @@ public class PrintableWood extends Wood {
     	else mask ^= 0x01;
 		return chM.get(mask);
 	}
-    
-    /**
-     * Default stream = System.out
-     * @param stream - заменяющий OutputStream
-     * @throws IOException
-     */
-    public void chOStream(OutputStream stream) throws IOException{
-    	os.close();
-    	s.close();
-    	s = stream;
-    	os = new OutputStreamWriter(s, System.getProperty("file.encoding"));
-    }
-    
+
     @Override
 	protected void eraseWoodman(String name){
     	super.eraseWoodman(name);
