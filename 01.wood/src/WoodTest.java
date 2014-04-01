@@ -1,40 +1,33 @@
+package test;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import wood.Action;
+import wood.Direction;
+import wood.My_Wood;
+import wood.Point;
+
 
 public class WoodTest {
 	
-	char [][] miniWood = new char [4][4];
+	char [][] miniWood = new char [4][];
 	
 	@Before
 	public void myWood(){
-		/*
-		 * 1111
-		 * 10K1
-		 * 1L01
-		 * 1111
-		 */
-		for (int i = 0; i < 4; i++ )
-		{	miniWood[i][0] = '1';
-			miniWood[i][3] = '1';
-		}
-		miniWood[0][1] = '1';
-		miniWood[0][2] = '1';
-		miniWood[3][1] = '1';
-		miniWood[3][2] = '1';
-		miniWood[2][1] = 'L';
-		miniWood[1][2] = 'K';
-		miniWood[1][1] = '0';
-		miniWood[2][2] = '0';
+		miniWood[0] = new char [] {'1','1','1','1'};
+		miniWood[1] = new char [] {'1','0','K','1'};
+		miniWood[2] = new char [] {'1','L','0','1'};
+		miniWood[3] = new char [] {'1','1','1','1'};
 	}
 	
 	@Test
 	public void testMove() {
 		My_Wood one = new My_Wood(miniWood);
-		Point my = new Point(1,1);
-		one.createWoodman("A", my);
+		Point myS = new Point(1,1);
+		Point myF = new Point(2,1);
+		one.createWoodman("A", myS, myF);
 		assertEquals(Action.WoodmanNotFound, one.move("B", Direction.Down));
 		assertEquals(Action.Fail, one.move("A", Direction.Up));
 		assertEquals(Action.Life, one.move("A", Direction.Down));
@@ -43,8 +36,9 @@ public class WoodTest {
 	@Test
 	public void testMoveKill() {
 		My_Wood one = new My_Wood(miniWood);
-		Point my = new Point(1,1);
-		one.createWoodman("A", my);
+		Point myS = new Point(1,1);
+		Point myF = new Point(2,2);
+		one.createWoodman("A", myS, myF);
 		assertEquals(Action.Dead, one.move("A", Direction.Right));//2 
 		assertEquals(Action.Ok, one.move("A", Direction.Left));
 		assertEquals(Action.Dead, one.move("A", Direction.Right));//1 
@@ -56,8 +50,9 @@ public class WoodTest {
 	@Test
 	public void testMove2() {
 		My_Wood one = new My_Wood(miniWood);
-		Point my = new Point(1,1);
-		one.createWoodman("A", my);
+		Point myS = new Point(1,1);
+		Point myF = new Point(2,2);
+		one.createWoodman("A", myS, myF);
 		assertEquals(Action.Life, one.move("A", Direction.Down));//4
 		assertEquals(Action.Fail, one.move("A", Direction.Down));//5
 		assertEquals(Action.Ok, one.move("A", Direction.Up));

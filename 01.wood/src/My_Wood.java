@@ -1,3 +1,4 @@
+package wood;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,11 +13,11 @@ public class My_Wood implements Wood {
 	}
 
 	@Override
-	public void createWoodman(String name, Point start) {
+	public void createWoodman(String name, Point start, Point finish) {
 		try{
 			if(m_woodmanlist.containsKey(name)) 
 			throw new Exception("Персонаж с таким именем уже существует!");
-			m_woodmanlist.put(name, new My_Woodman(name, start));
+			m_woodmanlist.put(name, new My_Woodman(name, start, finish));
 		}
 		catch(Exception e){
 			e.printStackTrace();
@@ -78,6 +79,10 @@ public class My_Wood implements Wood {
 		default:
 			break;
 		}
+	if((m_woodmanlist.get(name)).GetLocation().equals((m_woodmanlist.get(name)).GetFinish())){
+		m_woodmanlist.remove(name);//удаляем бота
+		return Action.Finish;
+	}
 		return null;
 	}
 

@@ -1,4 +1,6 @@
-﻿
+﻿package wood;
+
+
 public interface Wood {
 	/**
 	 * Создает нового лесного жителя.
@@ -6,7 +8,7 @@ public interface Wood {
 	 * @param name имя лесного жителя
 	 * @param start место появления
 	 */
-	void createWoodman(String name, Point start);
+	void createWoodman(String name, Point start, Point finish);
 	
 	/**
 	 * Перемещает лесного жителя.

@@ -1,12 +1,16 @@
+package wood;
+
 
 public class My_Woodman implements Woodman {
 
 	private int life; 
 	private String name; 
 	private final Point Start; 
-	public Point currentPosition; //текущее местоположение
+	public Point currentPosition; 
+	private final Point Finish;
 	
-	public My_Woodman(String my_name, Point start){
+	public My_Woodman(String my_name, Point start, Point finish){
+		Finish = finish;
 		name = my_name;
 		Start = start;
 		life = 3;
@@ -50,7 +54,10 @@ public class My_Woodman implements Woodman {
 	@Override
 	public void MoveToStart() {
 		currentPosition = Start;
-
 	}
-
+	
+	@Override
+	public Point GetFinish() {
+		return Finish;
+	}
 }

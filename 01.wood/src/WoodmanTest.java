@@ -1,27 +1,34 @@
+package test;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import wood.My_Woodman;
+import wood.Point;
 
 public class WoodmanTest {
 
 	@Test
 	public void testGetLifeCount() {
-		Point my = new Point(0, 0);
-		My_Woodman one = new My_Woodman("A", my);
+		Point myS = new Point(0, 0);
+		Point myF = new Point(1, 1);
+		My_Woodman one = new My_Woodman("A", myS, myF);
 		assertEquals(3, one.GetLifeCount());
 	}
 
 	@Test
 	public void testGetName() {
-		Point my = new Point(0, 0);
-		My_Woodman one = new My_Woodman("A", my);
+		Point myS = new Point(0, 0);
+		Point myF = new Point(1, 1);
+		My_Woodman one = new My_Woodman("A", myS, myF);
 		assertEquals("A", one.GetName());
 	}
 
 	@Test
 	public void testKill() {
-		Point my = new Point(0, 0);
-		My_Woodman one = new My_Woodman("A", my);
+		Point myS = new Point(0, 0);
+		Point myF = new Point(1, 1);
+		My_Woodman one = new My_Woodman("A", myS, myF);
 		assertEquals(3, one.GetLifeCount());
 		assertEquals(true, one.Kill());
 		assertEquals(2, one.GetLifeCount());
@@ -29,8 +36,9 @@ public class WoodmanTest {
 
 	@Test
 	public void testKill2() {
-		Point my = new Point(0, 0);
-		My_Woodman one = new My_Woodman("A", my);
+		Point myS = new Point(0, 0);
+		Point myF = new Point(1, 1);
+		My_Woodman one = new My_Woodman("A", myS, myF);
 		assertEquals(true, one.Kill());
 		assertEquals(true, one.Kill());
 		assertEquals(true, one.Kill());
@@ -39,8 +47,9 @@ public class WoodmanTest {
 	
 	@Test
 	public void testAddLife() {
-		Point my = new Point(0, 0);
-		My_Woodman one = new My_Woodman("A", my);
+		Point myS = new Point(0, 0);
+		Point myF = new Point(1, 1);
+		My_Woodman one = new My_Woodman("A", myS, myF);
 		assertEquals(3, one.GetLifeCount());
 		one.AddLife();
 		assertEquals(4, one.GetLifeCount());
@@ -48,28 +57,31 @@ public class WoodmanTest {
 
 	@Test
 	public void testGetLocation() {
-		Point my = new Point(0, 0);
-		My_Woodman one = new My_Woodman("A", my);
+		Point myS = new Point(0, 0);
+		Point myF = new Point(1, 1);
+		My_Woodman one = new My_Woodman("A", myS, myF);
 		equals(new Point(0, 0) == one.GetLocation());
 	}
 
 	@Test
 	public void testSetLocation() {
-		Point my = new Point(0, 0);
+		Point myS = new Point(0, 0);
+		Point myF = new Point(1, 2);
+		My_Woodman one = new My_Woodman("A", myS, myF);
 		Point location = new Point(1, 1);
-		My_Woodman one = new My_Woodman("A", my);
-		assertEquals(my, one.GetLocation());
+		assertEquals(myS, one.GetLocation());
 		one.SetLocation(location);
 		assertEquals(location, one.GetLocation());
 	}
 
 	@Test
 	public void testMoveToStart() {
-		Point my = new Point(0, 0);
-		My_Woodman one = new My_Woodman("A", my);
-		one.SetLocation(new Point(1, 1));
+		Point myS = new Point(0, 0);
+		Point myF = new Point(1, 1);
+		My_Woodman one = new My_Woodman("A", myS, myF);
+		one.SetLocation(new Point(1, 2));
 		one.MoveToStart();
-		assertEquals(my, one.GetLocation());
+		assertEquals(myS, one.GetLocation());
 	}
 
 }

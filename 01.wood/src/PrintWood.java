@@ -1,13 +1,15 @@
+package wood;
 import java.io.IOException;
 import java.io.OutputStream;
 
-
-public abstract class PrintWood extends My_Wood {
+public class PrintWood extends My_Wood {
 	
-	public PrintWood(char[][] my_wood){
+	OutputStream stream;
+	public PrintWood(char[][] my_wood, OutputStream my_stream){
 		super(my_wood);
+		stream = my_stream;
 	}
-	public void printWood(OutputStream stream) throws IOException{
+	private void print() throws IOException{
 		char[] line = new char[m_wood[0].length];
 		char[][] wood = stenci(m_wood);
 		for (int i = 0; i < super.m_wood.length; i++) {
@@ -105,6 +107,28 @@ public abstract class PrintWood extends My_Wood {
 			}
 		}
 		return ' ';
+	}
+	
+	@Override
+	public void createWoodman(String name, Point start, Point finish) {
+		super.createWoodman(name, start, finish);
+		try{
+		print();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public Action move(String name, Direction direction) {
+		Action currentAction;
+		currentAction = super.move(name, direction);
+		try{
+		print();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		return currentAction;
 	}
 	
 }
