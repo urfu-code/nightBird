@@ -2,7 +2,6 @@
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,104 +14,89 @@ import java.util.Set;
 public class PrintableWood extends MyWood {
 
 	List<StringBuilder> printList = new LinkedList<StringBuilder>(); 
-	private OutputStreamWriter ostream;
-	int wl = m_wood.length;  
-	int ww = m_wood[0].length; 
-	private Map <String,Character> m_woodmans=new HashMap<String,Character>();
+	private OutputStreamWriter ostream;	
+	private Map <String,Character> m_woodmans = new HashMap<String,Character>();
 	private Set <Character> m_woodmanListOfSymbols =  new HashSet<Character>();
-	public PrintableWood(char[][] wood,OutputStream stream) throws IOException {
+	int wl;
+	int ww;
+	private char[][] printableWood;
+
+	public PrintableWood(char[][] wood,OutputStream stream) throws IOException, CodeException {
 		super(wood);
+		m_wood = wood;
+		wl = wood.length;
+		ww = wood[0].length;
 		ostream = new OutputStreamWriter(stream);
 		m_woodmanListOfSymbols.addAll(Arrays.asList('☃','★','☆','☺','☻','♔','♕','♘','♞','♟','♚','⛷','♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓','✈','♦'));	 	
-		for(int i = 0; i < wl; i++) { 	
-			StringBuilder s = new StringBuilder(); 
-			for(int j = 0; j < ww; j++) { 	                    
-				char woodChar = m_wood[i][j];	 
-				switch (woodChar) {	
-				case '0':s.append('○');	
-				break;
-				case '1':s.append('✿');	
-				break;
-				case 'L':s.append('♥');	
-				break;
-				case 'K':s.append('✖');	
-				}
+		printableWood = new char[wl][ww];
+		for (int i=0; i<wl; i++) {
+			for (int j=0; j<ww; j++) {
+				printableWood[i][j] = getSymbolOfWood(i,j);
 			}
-			printList.add(s);
-		}	
-		printList.add(new StringBuilder());    
-		printList.add(new StringBuilder('♥' + " - life")); 
-		printList.add(new StringBuilder('✖' + " - death"));
+		}
 	}
 
 	@Override
-	public void createWoodman(String name, Point start) throws CodeException, IOException{
-		super.createWoodman(name, start);
-		Iterator<Character> itr = m_woodmanListOfSymbols.iterator();	
-		char symbolOfWoodman = itr.next();	
+	public void createWoodman(String name, Point start,Point finish) throws CodeException, IOException{
+		super.createWoodman(name, start, finish);	
+		Iterator<Character> i = m_woodmanListOfSymbols.iterator();
+		if (!i.hasNext()) throw new CodeException("You're extra woodman!");
+		char symbolOfWoodman = i.next();	
 		m_woodmanListOfSymbols.remove(symbolOfWoodman);
 		m_woodmans.put(name, symbolOfWoodman);
-		m_wood[start.getX()][start.getY()] = symbolOfWoodman;
+		printableWood[start.getX()][start.getY()] = symbolOfWoodman;
 		PrintWood();
 	}
 
-	private char getSymbol(int x, int y) {
-		char k;
-		k = m_wood[x][y];
-		switch (k) {	
-		case '0':
-			k='○';	
-			break;
-		case '1':
-			k='✿';	
-			break;
-		case 'L':
-			k='♥';	
-			break;
-		case 'K':
-			k='✖';	
-		}
-	return k;
-	}
-
 	@Override
-	public Action move(String name, Direction direction) throws IOException {
-		Point startLocation;
-		for (MyWoodman newWoodman : m_woodmanList.values()){
-			startLocation = newWoodman.GetLocation();
-			m_wood[startLocation.getX()][startLocation.getY()] = getSymbol(startLocation.getX(), startLocation.getY());		
-		}			
-		Action result=super.move(name, direction);
-		for (MyWoodman newWoodman : m_woodmanList.values()){
-			Point newLocation =  newWoodman.GetLocation();
-			m_wood[newLocation.getX()][newLocation.getY()] = m_woodmans.get(name);							
-		}
+	public Action move(String name, Direction direction) throws IOException, CodeException {
+		Point startLocation = super.getLocation(name);
+		printableWood[startLocation.getX()][startLocation.getY()] = getSymbolOfWood(startLocation.getX(), startLocation.getY());
+		Action result = super.move(name, direction);
+		Point newLocation = super.getLocation(name);
+		printableWood[newLocation.getX()][newLocation.getY()] = m_woodmans.get(name);
 		PrintWood();
 		return result;
 	}
 
-
-
-	public void PrintWood() throws IOException {
-
-		try { 
-			for (MyWoodman newWoodman : m_woodmanList.values()) {  
-				printList.get(newWoodman.GetLocation().getX()).setCharAt(newWoodman.GetLocation().getY(), m_wood[newWoodman.GetLocation().getX()][newWoodman.GetLocation().getY()]);
-				printList.add(new StringBuilder(m_wood[newWoodman.GetLocation().getX()][newWoodman.GetLocation().getY()] + " - " + newWoodman.GetName() + '(' + newWoodman.GetLifeCount() + " lives)"));	
-			}	
-
-			StringBuilder PrintOut = new StringBuilder(); 
-			for(StringBuilder str : printList) {             
-				PrintOut.append(str);                      
-				PrintOut.append(System.lineSeparator());   
-			}	
-			System.out.print(PrintOut.toString());
-			ostream.write(PrintOut.toString());  		
-			ostream.flush();
+	private char getSymbolOfWood(int x, int y) {
+		char life='♥';
+		char trap='✖';
+		char space='○';
+		char wall='✿';
+		switch (m_wood[x][y]) {	
+		case '0':
+			return space;
+		case '1':
+			return wall;
+		case 'L':
+			return life;
+		case 'K':
+			return trap;
 		}
-		catch(Exception e) {
+		return 0;
+	}
+
+	public void PrintWood() throws IOException, CodeException {
+		try {
+			for (int i=0; i<wl; i++) {
+				for (int j=0; j<ww; j++) {
+					ostream.write(printableWood[i][j]);
+				}
+				ostream.write(System.lineSeparator());
+			}
+			ostream.write(System.lineSeparator());
+			ostream.write('♥' + " - life" + System.lineSeparator()); 
+			ostream.write('✖' + " - death" + System.lineSeparator());
+			for (MyWoodman newWoodman : m_woodmanList.values())
+				ostream.write((printableWood[newWoodman.GetLocation().getX()][newWoodman.GetLocation().getY()] + " - " + newWoodman.GetName() + '(' + newWoodman.GetLifeCount() + " lives)"+ System.lineSeparator()));
+				ostream.flush();
+		} 
+		catch (IOException e) 
+		{
 			ostream.close();
 			e.printStackTrace();
 		}
 	}
+
 }
