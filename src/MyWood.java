@@ -29,41 +29,15 @@ public class MyWood implements Wood {
 			return Action.WoodmanNotFound;
 		}
 		Point loc = m_woodmanList.get(name).GetLocation();
-		Point tempLoc = m_woodmanList.get(name).GetLocation();
-		switch (direction) {
-		case Down: tempLoc.MoveDown();
-		break;
-		case Right: tempLoc.MoveRigth();
-		break;
-		case Left: tempLoc.MoveLeft();
-		break;
-		case Up: tempLoc.MoveUp();
-		break;
-		case None: return Action.Ok;
-		}
+		Point tempLoc = m_woodmanList.get(name).GetLocation().Move(direction);
 		switch (m_wood[tempLoc.getX()][tempLoc.getY()]) {
-		case '1': {
-			if (m_wood[loc.getX()][loc.getY()] == 'K') {
-				if (m_woodmanList.get(name).Kill()) {
-					return Action.Fail;
-				} else {
-					m_woodmanList.remove(name);
-					return Action.WoodmanNotFound;
-				}
-			}
-			if (m_wood[loc.getX()][loc.getY()] == 'L') {
-				m_woodmanList.get(name).AddLife();
-				return Action.Fail;
-			}
-			return Action.Fail;
-		}
 		case '0': {
 			m_woodmanList.get(name).SetLocation(tempLoc);
 			return Action.Ok;
 		}
 		case 'L': {
-			m_woodmanList.get(name).SetLocation(tempLoc);
 			m_woodmanList.get(name).AddLife();
+			m_woodmanList.get(name).SetLocation(tempLoc);
 			return Action.Life;
 		}
 		case 'K': {
@@ -71,11 +45,27 @@ public class MyWood implements Wood {
 				m_woodmanList.get(name).SetLocation(tempLoc);
 				return Action.Dead;
 			} else {
+				m_woodmanList.remove(name);
+				return Action.WoodmanNotFound;
+			}
+		}
+		default: {
+			switch (m_wood[loc.getX()][loc.getY()]){
+			case '0': return Action.Fail;
+			case 'L': {
+				m_woodmanList.get(name).AddLife();
+				return Action.Fail;
+			}
+			default: {
+				if (m_woodmanList.get(name).Kill()) {
+					return Action.Fail;
+				} else {
 					m_woodmanList.remove(name);
 					return Action.WoodmanNotFound;
+				}
+			}
 			}
 		}
 		}
-		return null;
 	}
 }

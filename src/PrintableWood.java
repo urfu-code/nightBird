@@ -5,11 +5,15 @@ import java.io.OutputStreamWriter;
 
 public class PrintableWood extends MyWood {
 
-	private OutputStream out;
+	private OutputStreamWriter out;
 
 	public PrintableWood(char[][] wood, int width, int height, OutputStream stream) {
 		super(wood, width, height);
-		this.out = stream;
+		try {
+			this.out = new OutputStreamWriter(stream, System.getProperty("file.encoding"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -27,19 +31,24 @@ public class PrintableWood extends MyWood {
 
 	private void printWood() {
 		try {
-			OutputStreamWriter stream = new OutputStreamWriter(out, System.getProperty("file.encoding"));
-			for (int i = 0; i < super.widthWood; i++) {
-				for (int j = 0; j < super.heightWood; j++)
+			for (int j = 0; j < heightWood; j++) {
+				for (int i = 0; i < widthWood; i++)
 					for (MyWoodman elem : m_woodmanList.values()) {
-						if (m_wood[i][j] == m_wood[elem.GetLocation().getX()][elem.GetLocation().getY()]) {
-							stream.write(elem.GetName().charAt(0));
+						if (i == elem.GetLocation().getX() && j == elem.GetLocation().getY()) {
+							out.write(elem.GetName().charAt(0));
 						} else {
-							stream.write(toChangeSymbol(m_wood[i][j]));
+							out.write(toChangeSymbol(m_wood[i][j]));
 						}
 					}
-				stream.write(System.lineSeparator());
+				out.write(System.lineSeparator());
 			}
-			stream.flush();
+			for (MyWoodman elem : m_woodmanList.values()) {
+				out.write(elem.GetName().charAt(0) + " - " + elem.GetName() + 
+						" (" + elem.GetLifeCount() + " lives)" + System.lineSeparator());
+			}
+			out.write("♥ - life" + System.lineSeparator());
+			out.write("▒ - kill");
+			out.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -48,8 +57,8 @@ public class PrintableWood extends MyWood {
 	private char toChangeSymbol(char c) {
 		if (c == '1') return '█';
 		if (c == '0') return ' ';
-		if (c == 'L') return '▒';
-		if (c == 'K') return '♥';
+		if (c == 'L') return '♥';
+		if (c == 'K') return '▒';
 		return c;
 	}
 }

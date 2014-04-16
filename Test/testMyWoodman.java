@@ -1,3 +1,4 @@
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -34,7 +35,7 @@ public class testMyWoodman {
 		man.Kill();
 		man.Kill();
 		man.Kill();
-		assert (false == man.Kill());
+		assertEquals(man.Kill(), false);
 	}
 
 	@Test
