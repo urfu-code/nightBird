@@ -30,4 +30,14 @@ public class Point {
 	public Point MoveRigth() {
 		return new Point(x + 1, y);
 	}
+	
+	public Point Move(Direction direction) {
+		switch(direction){
+		case Down: return MoveDown();
+		case Left: return MoveLeft();
+		case None: return this;
+		case Right: return MoveRigth();
+		default: return MoveUp();
+		}
+	}
 }

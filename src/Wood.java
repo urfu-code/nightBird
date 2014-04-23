@@ -1,12 +1,15 @@
-﻿
+﻿import java.io.IOException;
+
+
 public interface Wood {
 	/**
 	 * Создает нового лесного жителя.
 	 * 
 	 * @param name имя лесного жителя
 	 * @param start место появления
+	 * @throws IOException 
 	 */
-	void createWoodman(String name, Point start);
+	void createWoodman(String name, Point start) throws IOException;
 	
 	/**
 	 * Перемещает лесного жителя.
